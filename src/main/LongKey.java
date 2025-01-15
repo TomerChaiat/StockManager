@@ -11,12 +11,20 @@ public class LongKey extends Key implements Comparable<Key> {
         this.sum = 0f;
         this.change = 0f;
         this.timestamp = 0L;
+        this.is_initiate = false;
+    }
+
+    public LongKey(Long timestamp, Float price){
+        super();
+        this.timestamp = timestamp;
+        this.sum = price;
+        this.change = price;
+        this.is_initiate = false;
     }
 
     public void initializeTree(LongKey left, LongKey right) {
-        left.LeftSentinal();
-        right.RightSentinal();
-        this.RightSentinal();
+        super.initializeTree(left, right);
+        this.is_initiate = true;
     }
 
     @Override

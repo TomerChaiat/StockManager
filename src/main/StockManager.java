@@ -1,20 +1,22 @@
 package main;
 
 public class StockManager {
-    // add code here
+    private TwoThreeTree<String, TwoThreeTree<Long, Float>> stocks;
 
     public StockManager() {
-        // add code here
+        this.stocks = new TwoThreeTree<>();
     }
 
     // 1. Initialize the system
     public void initStocks() {
-        // add code here
+        this.stocks.StocksTreeInitiate();
     }
 
     // 2. Add a new stock
     public void addStock(String stockId, long timestamp, Float price) {
-        // add code here
+        TwoThreeTree<Long, Float> stock = new TwoThreeTree<>();
+        stock.PricesTreeInitiate(timestamp, price);
+        this.stocks.TwoThreeInsert(new TreeNode(stockId, stock));
     }
 
     // 3. Remove a stock
@@ -26,7 +28,7 @@ public class StockManager {
     public void updateStock(String stockId, long timestamp, Float priceDifference) {
         // add code here
     }
-
+/*
     // 5. Get the current price of a stock
     public Float getStockPrice(String stockId) {
         // add code here
@@ -46,6 +48,8 @@ public class StockManager {
     public String[] getStocksInPriceRange(Float price1, Float price2) {
         // add code here
     }
+
+ */
 
 }
 

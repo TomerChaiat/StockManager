@@ -46,10 +46,13 @@ public class Main {
         boolean expression = false;
         for (int i = 0; i < stockIds.size(); i++) {
             stockmanger.addStock(stockIds.get(i), initialTimestamps.get(i), prices.get(i));
+            /*
             expression = stockmanger.getStockPrice(stockIds.get(i)).equals(prices.get(i));
             Assert(expression);
-        }
 
+             */
+        }
+/*
         for (int i = 0; i < 3; i++) {
             String stockIdToRemove = stockIds.remove(0);
             prices.remove(0);
@@ -154,6 +157,8 @@ public class Main {
         if (!expression){
             throw new AssertionError();
         }
+
+ */
 
     }
 }

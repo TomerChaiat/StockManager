@@ -1,20 +1,23 @@
 package main;
 
 public class StringKey extends Key implements Comparable<Key> {
-    private Long name;
+    private String name;
 
     public StringKey() {
         super();
         this.name = null;
     }
 
-    public void initializeTree(StringKey left, StringKey middle) {
-        left.LeftSentinal();
-        middle.RightSentinal();
-        this.RightSentinal();
+    public StringKey(String name) {
+        super();
+        this.name = name;
     }
 
-    private Long getName(){
+    public void initializeTree(StringKey left, StringKey right) {
+        super.initializeTree(left, right);
+    }
+
+    private String getName(){
         return this.name;
     }
 
