@@ -50,11 +50,27 @@ public class StockManager {
         TwoThreeTree<LongKey, Float> stock_tree = desired.getValue();
         return stock_tree.getRoot().getValue();
     }
-/*
+
     // 6. Remove a specific timestamp from a stock's history
     public void removeStockTimestamp(String stockId, long timestamp) {
-        // add code here
+        StringKey searchKey = new StringKey(stockId);
+        TreeNode<StringKey, TwoThreeTree<LongKey, Float>> desired = stocks.search(stocks.getRoot(), searchKey);
+        if (desired == null) {
+            throw new IllegalArgumentException("Stock ID '" + stockId + "' not found.");
+        }
+        TwoThreeTree<LongKey, Float> stock_tree = desired.getValue();
+        LongKey search_key = new LongKey(timestamp);
+        TreeNode<LongKey, Float> desired_timestamp = stock_tree.search(stock_tree.getRoot(), search_key);
+        if (desired_timestamp == null) {
+            throw new IllegalArgumentException("Stock ID '" + stockId + "' not found.");
+        }
+        search_key = desired_timestamp.getKey();
+        if (search_key.isInitiate()){
+            throw new IllegalArgumentException("Timestamp '" + timestamp + "' can't be deleted.");
+        }
+        stock_tree.delete(desired_timestamp);
     }
+    /*
 
     // 7. Get the amount of stocks in a given price range
     public int getAmountStocksInPriceRange(Float price1, Float price2) {

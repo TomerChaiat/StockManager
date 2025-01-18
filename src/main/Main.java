@@ -47,10 +47,10 @@ public class Main {
         System.out.println("\nTesting timestamp removal for stock: " + targetStock);
 
         // Remove some timestamps from stock "C" and verify the updated sum
-        long[] timestampsToRemove = {8000L, 10000L};
+        long[] timestampsToRemove = {3000L, 8000L, 10000L};
         for (long ts : timestampsToRemove) {
             try {
-                //stockManager.removeStockTimestamp(targetStock, ts);
+                stockManager.removeStockTimestamp(targetStock, ts);
                 System.out.println("Removed timestamp " + ts + " from stock " + targetStock);
             } catch (Exception e) {
                 System.out.println("Error removing timestamp " + ts + ": " + e.getMessage());

@@ -12,6 +12,13 @@ public class LongKey extends Key implements Comparable<Key> {
         this.is_initiate = false;
     }
 
+    public LongKey(Long timestamp) {
+        super();
+        this.change = 0f;
+        this.timestamp = timestamp;
+        this.is_initiate = false;
+    }
+
     public LongKey(Long timestamp, Float price){
         super();
         this.timestamp = timestamp;
@@ -26,6 +33,10 @@ public class LongKey extends Key implements Comparable<Key> {
 
     public Float getChange() {
         return change;
+    }
+
+    public boolean isInitiate() {
+        return is_initiate;
     }
 
     @Override

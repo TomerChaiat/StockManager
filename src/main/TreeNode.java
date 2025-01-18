@@ -132,13 +132,13 @@ public class TreeNode<K extends Key, V> implements Comparable{
         }
 
         // Add values from left, middle, and right children if they exist.
-        if (left != null && left.getValue() instanceof Float) {
+        if (left != null && left.getValue() instanceof Float && left.getKey() != this.getKey()) {
             sum += (Float) left.getValue();
         }
-        if (middle != null && middle.getValue() instanceof Float) {
+        if (middle != null && middle.getValue() instanceof Float && middle.getKey() != this.getKey()) {
             sum += (Float) middle.getValue();
         }
-        if (right != null && right.getValue() instanceof Float) {
+        if (right != null && right.getValue() instanceof Float && right.getKey() != this.getKey()) {
             sum += (Float) right.getValue();
         }
 
