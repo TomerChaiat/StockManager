@@ -1,8 +1,6 @@
 package main;
 
-import jdk.nashorn.api.tree.Tree;
-
-public class TreeNode<K extends Comparable<K>, V> {
+public class TreeNode<K extends Key, V> implements Comparable{
 
     private K key;
     private V value;
@@ -32,13 +30,21 @@ public class TreeNode<K extends Comparable<K>, V> {
     public TreeNode() {
         this(null, null, null, null, null, null);
     }
+    public TreeNode(K key){
+        this(key, null, null, null, null, null);
+    }
 
     public K getKey() {
         return key;
     }
 
+    public V getValue() {
+        return value;
+    }
+
     public void setKey(K key) {
         this.key = key;
+        this.setInf(key);
     }
 
     public TreeNode<K, V> getParent() {
@@ -73,10 +79,39 @@ public class TreeNode<K extends Comparable<K>, V> {
         this.right = right;
     }
 
-    public void updateParent(TreeNode<K, V> left, TreeNode<K, V> middle, TreeNode<K, V> right) {
+    private void setInf(K child) {
+        Key parent_key;
+        Key child_key;
+        if (!(child instanceof Key) || !(this.getKey() instanceof Key))
+            return;
+        parent_key = this.getKey();
+        child_key = child;
+        if (child_key.isInf()){
+            parent_key.setInf(true);
+        }else if (child_key.isMinusInf()){
+            parent_key.setMinusInf(true);
+        }else if (!(child_key.isInf())){
+            parent_key.setInf(false);
+        }else if (!(child_key.isMinusInf())){
+            parent_key.setMinusInf(false);
+        }
+    }
+
+    public void updateChildren(TreeNode<K, V> left, TreeNode<K, V> middle, TreeNode<K, V> right) {
         this.setLeft(left);
         this.setMiddle(middle);
         this.setRight(right);
+        if (this.getKey() instanceof LongKey){
+            if (left != null && middle == null && right == null){
+                ((LongKey) this.getKey()).updateSum((LongKey) left.getKey(), null, null);
+            }
+            if (left != null && middle != null && right == null){
+                ((LongKey) this.getKey()).updateSum((LongKey) left.getKey(), (LongKey) middle.getKey(), null);
+            }
+            if (left != null && middle != null && right != null){
+                ((LongKey) this.getKey()).updateSum((LongKey) left.getKey(), (LongKey) middle.getKey(), (LongKey) right.getKey());
+            }
+        }
         if (left != null)
             left.setParent(this);
         if (middle != null)
@@ -85,28 +120,57 @@ public class TreeNode<K extends Comparable<K>, V> {
             right.setParent(this);
     }
 
-    public void updateChildren(TreeNode<K, V> parent) {
+    public void updateParent(TreeNode<K, V> parent) {
+        if (this.key instanceof LongKey && parent.getKey() instanceof LongKey)
+            parent.updateSum(this);
         this.setParent(parent);
+    }
+
+    private void updateSum(TreeNode<K, V> child) {
+        if (child == this.getLeft() && child != null)
+            ((LongKey) this.getKey()).updateSum(((LongKey)child.getKey()).getSum() - ((LongKey)this.getLeft().getKey()).getSum());
+        if (child == this.getMiddle() && child != null)
+            ((LongKey) this.getKey()).updateSum(((LongKey)child.getKey()).getSum() - ((LongKey)this.getMiddle().getKey()).getSum());
+        if (child == this.getRight() && child != null)
+            ((LongKey) this.getKey()).updateSum(((LongKey)child.getKey()).getSum() - ((LongKey)this.getRight().getKey()).getSum());
     }
 
     public void StocksTreeInitiate(){
         StringKey left_key = new StringKey();
         StringKey middle_key = new StringKey();
         StringKey root_key = new StringKey();
+
         root_key.initializeTree(left_key, middle_key);
         this.left.setKey((K) left_key);
         this.middle.setKey((K) middle_key);
         this.setKey((K) root_key);
     }
 
+
     public void PricesTreeInitiate(Long timestamp, Float price){
         LongKey left_key = new LongKey();
-        LongKey middle_key = new LongKey();
-        LongKey root_key = new LongKey(timestamp, price);
-        root_key.initializeTree(left_key, middle_key);
+        LongKey middle_key = new LongKey(timestamp, price);
+        LongKey root_key = new LongKey();
+        LongKey right_key = new LongKey();
+        middle_key.initializeTree(left_key, root_key,right_key);
         this.left.setKey((K) left_key);
         this.middle.setKey((K) middle_key);
+        this.right.setKey((K) right_key);
         this.setKey((K) root_key);
+        this.updateChildren(this.left, this.middle, this.right); // To initiate the correct price
+    }
+
+    public boolean isLeaf(){
+        return this.left == null;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        TreeNode<K, V> other = new TreeNode<>();
+        if (!(o instanceof TreeNode))
+            return 0;
+        other = (TreeNode<K, V>) o;
+        return this.key.compareTo(other.getKey());
     }
 }
 

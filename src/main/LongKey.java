@@ -22,8 +22,8 @@ public class LongKey extends Key implements Comparable<Key> {
         this.is_initiate = false;
     }
 
-    public void initializeTree(LongKey left, LongKey right) {
-        super.initializeTree(left, right);
+    public void initializeTree(LongKey left, LongKey root, LongKey right) {
+        super.initializeTree(left, root, right);
         this.is_initiate = true;
     }
 
@@ -38,5 +38,23 @@ public class LongKey extends Key implements Comparable<Key> {
         }else{
             return this.timestamp.compareTo(other.timestamp);
         }
+    }
+
+    public Float getSum() {
+        return sum;
+    }
+
+    public void updateSum(LongKey left, LongKey middle, LongKey right) {
+        this.sum = this.change;
+        if (left != null)
+            this.sum += left.getSum();
+        if (middle != null)
+            this.sum += middle.getSum();
+        if (right != null)
+            this.sum += right.getSum();
+    }
+
+    public void updateSum(Float num){
+        this.sum += num;
     }
 }

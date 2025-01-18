@@ -1,14 +1,14 @@
 package main;
 
-public class TwoThreeTree<K extends Comparable<K>, V> {
+public class TwoThreeTree<K extends Key, V> {
 
-    TreeNode<K,V> root;
+    private TreeNode<K,V> root;
 
     public TwoThreeTree() {
         TreeNode<K,V> l = new TreeNode<>();
         TreeNode<K,V> m = new TreeNode<>();
         TreeNode<K,V> x = new TreeNode<>();
-        x.updateParent(l,m,null);
+        x.updateChildren(l,m,null);
         this.root = x;
     }
 
@@ -17,44 +17,67 @@ public class TwoThreeTree<K extends Comparable<K>, V> {
     }
 
     public void PricesTreeInitiate(Long timestamp, Float price) {
+        TreeNode<K,V> r = new TreeNode<>();
+        this.root.updateChildren(root.getLeft(), root.getMiddle(), r);
         this.root.PricesTreeInitiate(timestamp, price);
     }
 
     public TreeNode<K, V> search(TreeNode<K, V> x, K k) {
-        if (x.getLeft() == null) {
-            if (x.getKey().compareTo(k) == 0) {
+        TreeNode<K, V> k_node = new TreeNode<>(k);
+        if (x.isLeaf()) {
+            if (k_node.compareTo(x) == 0) {
                 return x;
             } else {
                 return null;
             }
         }
-        if (k.compareTo(x.getLeft().getKey()) <= 0) {
+        if (k_node.compareTo(x.getLeft()) <= 0) {
             return search(x.getLeft(), k);
-        } else if (k.compareTo(x.getMiddle().getKey()) <= 0) {
+        } else if (k_node.compareTo(x.getMiddle().getKey()) <= 0) {
             return search(x.getMiddle(), k);
         } else {
             return search(x.getRight(), k);
         }
     }
 
+    public TreeNode<K, V> getRoot(){
+        return this.root;
+    }
+
     public void update_key(TreeNode<K, V> x){
-        x.setKey(x.getLeft().getKey());
-        if(x.getMiddle() != null){
-            x.setKey(x.getMiddle().getKey());
-        }
-        if(x.getRight() != null){
-            x.setKey(x.getRight().getKey());
+       // if (root.getKey() instanceof StringKey) {
+            x.setKey(x.getLeft().getKey());
+            if (x.getMiddle() != null) {
+                x.setKey(x.getMiddle().getKey());
+            }
+            if (x.getRight() != null) {
+                x.setKey(x.getRight().getKey());
+        //    }
+                /*
+        }else if (root.getKey() instanceof LongKey) {
+            x.setKey(x.getLeft().getKey());
+            ((LongKey) x.getKey()).updateSum((LongKey) x.getKey(), null, null);
+            if (x.getMiddle() != null) {
+                x.setKey(x.getMiddle().getKey());
+                ((LongKey) x.getKey()).updateSum((LongKey) x.getLeft().getKey(), (LongKey) x.getMiddle().getKey(), null);
+            }
+            if (x.getRight() != null) {
+                x.setKey(x.getRight().getKey());
+                ((LongKey) x.getKey()).updateSum((LongKey) x.getLeft().getKey(), (LongKey) x.getMiddle().getKey(), (LongKey) x.getRight().getKey());
+            }
+
+                 */
         }
     }
 
     public void set_children(TreeNode<K,V> x, TreeNode<K, V> l, TreeNode<K, V> m, TreeNode<K, V> r){
-        x.updateParent(l,m,r);
-        l.updateChildren(x);
+        x.updateChildren(l,m,r);
+        l.updateParent(x);
         if(m != null){
-            m.updateChildren(x);
+            m.updateParent(x);
         }
         if(r != null){
-            r.updateChildren(x);
+            r.updateParent(x);
         }
         update_key(x);
     }
@@ -63,40 +86,38 @@ public class TwoThreeTree<K extends Comparable<K>, V> {
         TreeNode<K, V> l = x.getLeft();
         TreeNode<K, V> m = x.getMiddle();
         TreeNode<K, V> r = x.getRight();
+
         if(r == null){
             if(z.getKey().compareTo(l.getKey()) < 0){
-                set_children(x,z,l,m);
+                set_children(x, z, l, m);
             } else if(z.getKey().compareTo(m.getKey()) < 0){
-                set_children(x,l,z,m);
+                set_children(x, l, z, m);
             } else {
-                set_children(x,l,m,z);
+                set_children(x, l, m, z);
             }
             return null;
         }
         TreeNode<K, V> y = new TreeNode<>();
         if(z.getKey().compareTo(l.getKey()) < 0){
-            set_children(x,z,l,null);
-            set_children(y,m,r,null);
+            set_children(x, z, l, null);
+            set_children(y, m, r, null);
         } else if (z.getKey().compareTo(m.getKey()) < 0){
-            set_children(x,l,z,null);
-            set_children(y,m,r,null);
+            set_children(x, l, z, null);
+            set_children(y, m, r, null);
         } else if(z.getKey().compareTo(r.getKey()) < 0){
-            set_children(x,l,m,null);
-            set_children(y,z,r,null);
+            set_children(x, l, m, null);
+            set_children(y, z, r, null);
         } else {
-            set_children(x,l,m,null);
-            set_children(y,r,z,null);
+            set_children(x, l, m, null);
+            set_children(y, r, z, null);
         }
+
         return y;
     }
 
     public void TwoThreeInsert(TreeNode<K,V> z){
         TreeNode<K,V> y = this.root;
-        while(y.getLeft() != null){
-
-            if(y.getLeft().getKey().compareTo(z.getKey()) == 0 || y.getMiddle().getKey().compareTo(z.getKey()) == 0 || y.getRight().getKey().compareTo(z.getKey()) == 0){
-                throw new IllegalArgumentException();
-            }
+        while(!y.isLeaf()){
             if(z.getKey().compareTo(y.getLeft().getKey()) < 0){
                 y = y.getLeft();
             } else if(z.getKey().compareTo(y.getMiddle().getKey()) < 0){
@@ -124,6 +145,9 @@ public class TwoThreeTree<K extends Comparable<K>, V> {
 
     public TreeNode<K, V> borrow_or_merge(TreeNode<K, V> y){
         TreeNode<K, V> z = y.getParent();
+        if (z == null){
+            return null;
+        }
         if(y == z.getLeft()){
             TreeNode<K, V> x = z.getMiddle();
             if(x.getRight() != null){
@@ -175,9 +199,10 @@ public class TwoThreeTree<K extends Comparable<K>, V> {
                     y = borrow_or_merge(y);
                 } else {
                     this.root = y.getLeft();
-                    y.getLeft().updateChildren(null);
+                    y.getLeft().updateParent(null);
                 }
             }
         }
     }
+
 }

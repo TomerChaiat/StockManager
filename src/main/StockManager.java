@@ -1,7 +1,7 @@
 package main;
 
 public class StockManager {
-    private TwoThreeTree<String, TwoThreeTree<Long, Float>> stocks;
+    private TwoThreeTree<StringKey, TwoThreeTree<LongKey, Float>> stocks;
 
     public StockManager() {
         this.stocks = new TwoThreeTree<>();
@@ -14,26 +14,43 @@ public class StockManager {
 
     // 2. Add a new stock
     public void addStock(String stockId, long timestamp, Float price) {
-        TwoThreeTree<Long, Float> stock = new TwoThreeTree<>();
-        stock.PricesTreeInitiate(timestamp, price);
-        this.stocks.TwoThreeInsert(new TreeNode(stockId, stock));
+        TwoThreeTree<LongKey, Float> stockTree = new TwoThreeTree<>();
+        stockTree.PricesTreeInitiate(timestamp, price);
+        this.stocks.TwoThreeInsert(new TreeNode(new StringKey(stockId), stockTree));
     }
 
     // 3. Remove a stock
     public void removeStock(String stockId) {
-        // add code here
+        StringKey searchKey = new StringKey(stockId);
+        TreeNode<StringKey, TwoThreeTree<LongKey, Float>> desired = stocks.search(stocks.getRoot(), searchKey);
+        if (desired == null) {
+            throw new IllegalArgumentException("Stock ID '" + stockId + "' not found.");
+        }
+        stocks.delete(desired);
     }
 
     // 4. Update a stock price
     public void updateStock(String stockId, long timestamp, Float priceDifference) {
-        // add code here
-    }
-/*
-    // 5. Get the current price of a stock
-    public Float getStockPrice(String stockId) {
-        // add code here
+        StringKey searchKey = new StringKey(stockId);
+        TreeNode<StringKey, TwoThreeTree<LongKey, Float>> desired = stocks.search(stocks.getRoot(), searchKey);
+        if (desired == null) {
+            throw new IllegalArgumentException("Stock ID '" + stockId + "' not found.");
+        }
+        TwoThreeTree<LongKey, Float> stock_tree = desired.getValue();
+        stock_tree.TwoThreeInsert(new TreeNode(new LongKey(timestamp, priceDifference), priceDifference));
     }
 
+    // 5. Get the current price of a stock
+    public Float getStockPrice(String stockId) {
+        StringKey searchKey = new StringKey(stockId);
+        TreeNode<StringKey, TwoThreeTree<LongKey, Float>> desired = stocks.search(stocks.getRoot(), searchKey);
+        if (desired == null) {
+            throw new IllegalArgumentException("Stock ID '" + stockId + "' not found.");
+        }
+        TwoThreeTree<LongKey, Float> stock_tree = desired.getValue();
+        return stock_tree.getRoot().getKey().getSum();
+    }
+/*
     // 6. Remove a specific timestamp from a stock's history
     public void removeStockTimestamp(String stockId, long timestamp) {
         // add code here
@@ -50,7 +67,6 @@ public class StockManager {
     }
 
  */
-
 }
 
 

@@ -3,6 +3,85 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+        // 1) Create a StockManager and initialize the system
+        StockManager stockManager = new StockManager();
+        stockManager.initStocks();
+        System.out.println("Initialized the StockManager's 2-3 tree.\n");
+
+        // 2) Sample data to insert
+        String[] stockIds = {"A", "B", "C", "D", "E", "F", "G"};
+        long[] timestamps = {1000L, 2000L, 3000L, 4000L, 5000L, 6000L, 7000L};
+        float[] prices = {135.5f, 720.0f, 3205.0f, 245.1f, 2452.1f, 23.0f, 2.0f};
+
+        // 3) Insert each stock
+        for (int i = 0; i < stockIds.length; i++) {
+            stockManager.addStock(stockIds[i], timestamps[i], prices[i]);
+            System.out.println("Added stock: " + stockIds[i]
+                    + " (timestamp=" + timestamps[i]
+                    + ", price=" + prices[i] + ")");
+        }
+
+        System.out.println("\nAll stocks have been added.\n");
+
+        // 4) Test getStockPrice
+        for (String stockId : stockIds) {
+            try {
+                Float price = stockManager.getStockPrice(stockId);
+                System.out.println("Current price of stock " + stockId + ": " + price);
+            } catch (Exception e) {
+                System.out.println("Error fetching price for stock " + stockId + ": " + e.getMessage());
+            }
+        }
+
+        System.out.println("\nTesting updateStock functionality.\n");
+
+        // 5) Test updateStock
+        stockManager.updateStock("C", 8000L, 500f); // Update stock C with new timestamp and price change
+        stockManager.updateStock("A", 9000L, -35.5f); // Update stock A with new timestamp and price reduction
+
+        // Verify the updates
+        for (String stockId : stockIds) {
+            try {
+                Float price = stockManager.getStockPrice(stockId);
+                System.out.println("Updated price of stock " + stockId + ": " + price);
+            } catch (Exception e) {
+                System.out.println("Error fetching updated price for stock " + stockId + ": " + e.getMessage());
+            }
+        }
+
+        System.out.println("\nTesting stock removal functionality.\n");
+
+        // 6) Remove a stock
+        String stockToRemove = "C";
+        System.out.println("Removing stock: " + stockToRemove);
+        stockManager.removeStock(stockToRemove);
+        System.out.println("Removed stock: " + stockToRemove);
+
+        // Verify removal
+        try {
+            stockManager.getStockPrice(stockToRemove);
+            System.out.println("Test failed: Stock " + stockToRemove + " was not removed.");
+        } catch (Exception e) {
+            System.out.println("Stock " + stockToRemove + " successfully removed.");
+        }
+
+        // 7) Attempt to remove a non-existing stock
+        String nonExistingStock = "XYZ";
+        try {
+            System.out.println("\nAttempting to remove non-existing stock: " + nonExistingStock);
+            stockManager.removeStock(nonExistingStock);
+            System.out.println("No error thrown when removing non-existing stock.");
+        } catch (Exception e) {
+            System.out.println("Caught exception (expected for non-existing stock): " + e.getMessage());
+        }
+
+        // 8) Done
+        System.out.println("\nDone testing the StockManager.");
+    }
+}
+
+    /*
+    public static void main(String[] args) {
 
         ArrayList<String> stockIds = new ArrayList<>();
         stockIds.add("ABCDEF");
@@ -46,13 +125,9 @@ public class Main {
         boolean expression = false;
         for (int i = 0; i < stockIds.size(); i++) {
             stockmanger.addStock(stockIds.get(i), initialTimestamps.get(i), prices.get(i));
-            /*
             expression = stockmanger.getStockPrice(stockIds.get(i)).equals(prices.get(i));
             Assert(expression);
-
-             */
         }
-/*
         for (int i = 0; i < 3; i++) {
             String stockIdToRemove = stockIds.remove(0);
             prices.remove(0);
@@ -157,8 +232,9 @@ public class Main {
         if (!expression){
             throw new AssertionError();
         }
-
- */
-
     }
+
+
 }
+
+     */
