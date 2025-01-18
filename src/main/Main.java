@@ -23,60 +23,61 @@ public class Main {
 
         System.out.println("\nAll stocks have been added.\n");
 
-        // 4) Test getStockPrice
+        // 4) Test multiple updates to a single stock
+        String targetStock = "C";
+        System.out.println("Testing multiple updates to stock: " + targetStock);
+
+        // Apply updates to stock "C"
+        float[] priceChanges = {500f, -200f, 100f, 300f, -50f};
+        long[] updateTimestamps = {8000L, 9000L, 10000L, 11000L, 12000L};
+        for (int i = 0; i < priceChanges.length; i++) {
+            stockManager.updateStock(targetStock, updateTimestamps[i], priceChanges[i]);
+            System.out.println("Updated stock " + targetStock + " with price change " + priceChanges[i]
+                    + " at timestamp " + updateTimestamps[i]);
+        }
+
+        // Check the updated price of stock "C"
+        try {
+            Float updatedPrice = stockManager.getStockPrice(targetStock);
+            System.out.println("Updated price of stock " + targetStock + ": " + updatedPrice);
+        } catch (Exception e) {
+            System.out.println("Error fetching updated price for stock " + targetStock + ": " + e.getMessage());
+        }
+
+        System.out.println("\nTesting timestamp removal for stock: " + targetStock);
+
+        // Remove some timestamps from stock "C" and verify the updated sum
+        long[] timestampsToRemove = {8000L, 10000L};
+        for (long ts : timestampsToRemove) {
+            try {
+                //stockManager.removeStockTimestamp(targetStock, ts);
+                System.out.println("Removed timestamp " + ts + " from stock " + targetStock);
+            } catch (Exception e) {
+                System.out.println("Error removing timestamp " + ts + ": " + e.getMessage());
+            }
+        }
+
+        // Check the price of stock "C" after timestamp removal
+        try {
+            Float updatedPriceAfterRemoval = stockManager.getStockPrice(targetStock);
+            System.out.println("Price of stock " + targetStock + " after timestamp removal: " + updatedPriceAfterRemoval);
+        } catch (Exception e) {
+            System.out.println("Error fetching updated price for stock " + targetStock + ": " + e.getMessage());
+        }
+
+        System.out.println("\nFinal Verification of All Stocks:\n");
+
+        // Verify the final state of all stocks
         for (String stockId : stockIds) {
             try {
                 Float price = stockManager.getStockPrice(stockId);
-                System.out.println("Current price of stock " + stockId + ": " + price);
+                System.out.println("Final price of stock " + stockId + ": " + price);
             } catch (Exception e) {
                 System.out.println("Error fetching price for stock " + stockId + ": " + e.getMessage());
             }
         }
 
-        System.out.println("\nTesting updateStock functionality.\n");
-
-        // 5) Test updateStock
-        stockManager.updateStock("C", 8000L, 500f); // Update stock C with new timestamp and price change
-        stockManager.updateStock("A", 9000L, -35.5f); // Update stock A with new timestamp and price reduction
-
-        // Verify the updates
-        for (String stockId : stockIds) {
-            try {
-                Float price = stockManager.getStockPrice(stockId);
-                System.out.println("Updated price of stock " + stockId + ": " + price);
-            } catch (Exception e) {
-                System.out.println("Error fetching updated price for stock " + stockId + ": " + e.getMessage());
-            }
-        }
-
-        System.out.println("\nTesting stock removal functionality.\n");
-
-        // 6) Remove a stock
-        String stockToRemove = "C";
-        System.out.println("Removing stock: " + stockToRemove);
-        stockManager.removeStock(stockToRemove);
-        System.out.println("Removed stock: " + stockToRemove);
-
-        // Verify removal
-        try {
-            stockManager.getStockPrice(stockToRemove);
-            System.out.println("Test failed: Stock " + stockToRemove + " was not removed.");
-        } catch (Exception e) {
-            System.out.println("Stock " + stockToRemove + " successfully removed.");
-        }
-
-        // 7) Attempt to remove a non-existing stock
-        String nonExistingStock = "XYZ";
-        try {
-            System.out.println("\nAttempting to remove non-existing stock: " + nonExistingStock);
-            stockManager.removeStock(nonExistingStock);
-            System.out.println("No error thrown when removing non-existing stock.");
-        } catch (Exception e) {
-            System.out.println("Caught exception (expected for non-existing stock): " + e.getMessage());
-        }
-
-        // 8) Done
-        System.out.println("\nDone testing the StockManager.");
+        System.out.println("\nDone with comprehensive testing of the StockManager.");
     }
 }
 

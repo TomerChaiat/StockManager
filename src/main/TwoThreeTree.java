@@ -45,28 +45,12 @@ public class TwoThreeTree<K extends Key, V> {
     }
 
     public void update_key(TreeNode<K, V> x){
-       // if (root.getKey() instanceof StringKey) {
-            x.setKey(x.getLeft().getKey());
-            if (x.getMiddle() != null) {
-                x.setKey(x.getMiddle().getKey());
-            }
-            if (x.getRight() != null) {
-                x.setKey(x.getRight().getKey());
-        //    }
-                /*
-        }else if (root.getKey() instanceof LongKey) {
-            x.setKey(x.getLeft().getKey());
-            ((LongKey) x.getKey()).updateSum((LongKey) x.getKey(), null, null);
-            if (x.getMiddle() != null) {
-                x.setKey(x.getMiddle().getKey());
-                ((LongKey) x.getKey()).updateSum((LongKey) x.getLeft().getKey(), (LongKey) x.getMiddle().getKey(), null);
-            }
-            if (x.getRight() != null) {
-                x.setKey(x.getRight().getKey());
-                ((LongKey) x.getKey()).updateSum((LongKey) x.getLeft().getKey(), (LongKey) x.getMiddle().getKey(), (LongKey) x.getRight().getKey());
-            }
-
-                 */
+        x.setKey(x.getLeft().getKey());
+        if (x.getMiddle() != null) {
+            x.setKey(x.getMiddle().getKey());
+        }
+        if (x.getRight() != null) {
+            x.setKey(x.getRight().getKey());
         }
     }
 

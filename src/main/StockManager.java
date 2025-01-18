@@ -48,7 +48,7 @@ public class StockManager {
             throw new IllegalArgumentException("Stock ID '" + stockId + "' not found.");
         }
         TwoThreeTree<LongKey, Float> stock_tree = desired.getValue();
-        return stock_tree.getRoot().getKey().getSum();
+        return stock_tree.getRoot().getValue();
     }
 /*
     // 6. Remove a specific timestamp from a stock's history

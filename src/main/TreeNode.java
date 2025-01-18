@@ -101,16 +101,8 @@ public class TreeNode<K extends Key, V> implements Comparable{
         this.setLeft(left);
         this.setMiddle(middle);
         this.setRight(right);
-        if (this.getKey() instanceof LongKey){
-            if (left != null && middle == null && right == null){
-                ((LongKey) this.getKey()).updateSum((LongKey) left.getKey(), null, null);
-            }
-            if (left != null && middle != null && right == null){
-                ((LongKey) this.getKey()).updateSum((LongKey) left.getKey(), (LongKey) middle.getKey(), null);
-            }
-            if (left != null && middle != null && right != null){
-                ((LongKey) this.getKey()).updateSum((LongKey) left.getKey(), (LongKey) middle.getKey(), (LongKey) right.getKey());
-            }
+        if (this.getKey() instanceof LongKey || left.getKey() instanceof LongKey){
+            this.updateSum(left, middle, right);
         }
         if (left != null)
             left.setParent(this);
@@ -121,18 +113,41 @@ public class TreeNode<K extends Key, V> implements Comparable{
     }
 
     public void updateParent(TreeNode<K, V> parent) {
-        if (this.key instanceof LongKey && parent.getKey() instanceof LongKey)
-            parent.updateSum(this);
         this.setParent(parent);
     }
 
-    private void updateSum(TreeNode<K, V> child) {
-        if (child == this.getLeft() && child != null)
-            ((LongKey) this.getKey()).updateSum(((LongKey)child.getKey()).getSum() - ((LongKey)this.getLeft().getKey()).getSum());
-        if (child == this.getMiddle() && child != null)
-            ((LongKey) this.getKey()).updateSum(((LongKey)child.getKey()).getSum() - ((LongKey)this.getMiddle().getKey()).getSum());
-        if (child == this.getRight() && child != null)
-            ((LongKey) this.getKey()).updateSum(((LongKey)child.getKey()).getSum() - ((LongKey)this.getRight().getKey()).getSum());
+    private void updateSum(TreeNode<K, V> left, TreeNode<K, V> middle, TreeNode<K, V> right) {
+        LongKey parent_key = null;
+        if (this.getKey() instanceof LongKey) {
+            parent_key = (LongKey) this.getKey();
+        }
+
+        Float sum;
+
+        // Start with the parent's change value.
+        if (parent_key == this.getKey() && parent_key != null){
+            sum = parent_key.getChange();
+        }else{
+            sum = 0f;
+        }
+
+        // Add values from left, middle, and right children if they exist.
+        if (left != null && left.getValue() instanceof Float) {
+            sum += (Float) left.getValue();
+        }
+        if (middle != null && middle.getValue() instanceof Float) {
+            sum += (Float) middle.getValue();
+        }
+        if (right != null && right.getValue() instanceof Float) {
+            sum += (Float) right.getValue();
+        }
+
+        // Safely assign the sum to this.value if it's compatible with Float.
+        if (this.value instanceof Float || this.value == null) {
+            this.value = (V) sum; // Safe cast to generic type V.
+        } else {
+            throw new IllegalArgumentException("Incompatible value type for sum calculation.");
+        }
     }
 
     public void StocksTreeInitiate(){
@@ -155,6 +170,7 @@ public class TreeNode<K extends Key, V> implements Comparable{
         middle_key.initializeTree(left_key, root_key,right_key);
         this.left.setKey((K) left_key);
         this.middle.setKey((K) middle_key);
+        this.middle.value = (V) price;
         this.right.setKey((K) right_key);
         this.setKey((K) root_key);
         this.updateChildren(this.left, this.middle, this.right); // To initiate the correct price
