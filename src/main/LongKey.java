@@ -41,7 +41,7 @@ public class LongKey extends Key implements Comparable<Key> {
 
     @Override
     public int compareTo(Key o) {
-        if (!(o instanceof LongKey) || o == null || this == null) {
+        if (!(o instanceof LongKey)) {
             return 0;
         }
         LongKey other = (LongKey) o;

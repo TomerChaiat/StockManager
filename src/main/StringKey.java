@@ -23,7 +23,7 @@ public class StringKey extends Key implements Comparable<Key> {
 
     @Override
     public int compareTo(Key o) {
-        if (!(o instanceof StringKey) || o == null || this == null) {
+        if (!(o instanceof StringKey)) {
             return 0;
         }
         StringKey other = (StringKey) o;

@@ -16,7 +16,7 @@ public class StockManager {
     public void addStock(String stockId, long timestamp, Float price) {
         TwoThreeTree<LongKey, Float> stockTree = new TwoThreeTree<>();
         stockTree.PricesTreeInitiate(timestamp, price);
-        this.stocks.TwoThreeInsert(new TreeNode(new StringKey(stockId), stockTree));
+        this.stocks.TwoThreeInsert(new TreeNode<>(new StringKey(stockId), stockTree));
     }
 
     // 3. Remove a stock

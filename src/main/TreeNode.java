@@ -1,6 +1,6 @@
 package main;
 
-public class TreeNode<K extends Key, V> implements Comparable{
+public class TreeNode<K extends Key, V> implements Comparable<V>{
 
     private K key;
     private V value;
@@ -82,10 +82,15 @@ public class TreeNode<K extends Key, V> implements Comparable{
     private void setInf(K child) {
         Key parent_key;
         Key child_key;
-        if (!(child instanceof Key) || !(this.getKey() instanceof Key))
+        if (child == null || this.getKey() == null)
             return;
         parent_key = this.getKey();
         child_key = child;
+
+        // Set infinity or minus infinity, depends on the child's key.
+        parent_key.setInf(child_key.isInf());
+
+        /*
         if (child_key.isInf()){
             parent_key.setInf(true);
         }else if (child_key.isMinusInf()){
@@ -95,6 +100,7 @@ public class TreeNode<K extends Key, V> implements Comparable{
         }else if (!(child_key.isMinusInf())){
             parent_key.setMinusInf(false);
         }
+         */
     }
 
     public void updateChildren(TreeNode<K, V> left, TreeNode<K, V> middle, TreeNode<K, V> right) {
