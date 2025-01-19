@@ -33,7 +33,7 @@ public class TwoThreeTree<K extends Key, V> {
         }
         if (k_node.compareTo(x.getLeft()) <= 0) {
             return search(x.getLeft(), k);
-        } else if (k_node.compareTo(x.getMiddle().getKey()) <= 0) {
+        } else if (k_node.compareTo(x.getMiddle()) <= 0) {
             return search(x.getMiddle(), k);
         } else {
             return search(x.getRight(), k);

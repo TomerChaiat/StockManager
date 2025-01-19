@@ -62,7 +62,7 @@ public class StockManager {
         LongKey search_key = new LongKey(timestamp);
         TreeNode<LongKey, Float> desired_timestamp = stock_tree.search(stock_tree.getRoot(), search_key);
         if (desired_timestamp == null) {
-            throw new IllegalArgumentException("Stock ID '" + stockId + "' not found.");
+            throw new IllegalArgumentException("TimeStamp '" + timestamp + "' not found.");
         }
         search_key = desired_timestamp.getKey();
         if (search_key.isInitiate()){
