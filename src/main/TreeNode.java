@@ -119,21 +119,8 @@ public class TreeNode<K extends Key, V> implements Comparable{
     private void updateSum(TreeNode<K, V> left, TreeNode<K, V> middle, TreeNode<K, V> right) {
         if (this.isLeaf())
             return;
-        LongKey parent_key = null;
-        if (this.getKey() instanceof LongKey) {
-            parent_key = (LongKey) this.getKey();
-        }
 
         Float sum = 0f;
-
-        // Start with the parent's change value.
-        /*
-        if (parent_key == this.getKey() && parent_key != null){
-            sum = parent_key.getChange();
-        }else{
-            sum = 0f;
-        }
-         */
 
         // Add values from left, middle, and right children if they exist.
         if (left != null && left.getValue() instanceof Float) {
