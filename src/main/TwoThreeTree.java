@@ -44,7 +44,7 @@ public class TwoThreeTree<K extends Key, V> {
         return this.root;
     }
 
-    public void update_key(TreeNode<K, V> x){
+    private void update_key(TreeNode<K, V> x){
         x.setKey(x.getLeft().getKey());
         if (x.getMiddle() != null) {
             x.setKey(x.getMiddle().getKey());
@@ -66,7 +66,7 @@ public class TwoThreeTree<K extends Key, V> {
         update_key(x);
     }
 
-    public TreeNode<K, V> insert_and_split(TreeNode<K, V> x, TreeNode<K, V> z){
+    private TreeNode<K, V> insert_and_split(TreeNode<K, V> x, TreeNode<K, V> z){
         TreeNode<K, V> l = x.getLeft();
         TreeNode<K, V> m = x.getMiddle();
         TreeNode<K, V> r = x.getRight();
@@ -127,7 +127,7 @@ public class TwoThreeTree<K extends Key, V> {
         }
     }
 
-    public TreeNode<K, V> borrow_or_merge(TreeNode<K, V> y){
+    private TreeNode<K, V> borrow_or_merge(TreeNode<K, V> y){
         TreeNode<K, V> z = y.getParent();
         if (z == null){
             return null;
