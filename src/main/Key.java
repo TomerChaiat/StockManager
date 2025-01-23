@@ -1,6 +1,6 @@
 package main;
 
-public class Key implements Comparable<Key> {
+abstract class Key implements Comparable<Key> {
     protected boolean is_inf;
     protected boolean is_minus_inf;
 
