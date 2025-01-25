@@ -12,8 +12,20 @@ public class TwoThreeTree<K extends Key, V> {
         this.root = x;
     }
 
+    public TwoThreeTree(boolean val) {
+        TreeNode<Key, Float> l = new TreeNode<>(null, 0f);
+        TreeNode<Key, Float> m = new TreeNode<>(null, 0f);
+        TreeNode<Key, Float> x = new TreeNode<>(null, 0f);
+        x.updateChildren(l,m,null);
+        this.root = (TreeNode<K, V>) x;
+    }
+
     public void StocksTreeInitiate(){
         this.root.StocksTreeInitiate();
+    }
+
+    public void StocksPricesTreeInitiate(){
+        this.root.StocksTreePricesInitiate();
     }
 
     public void PricesTreeInitiate(Long timestamp, Float price) {
@@ -52,6 +64,7 @@ public class TwoThreeTree<K extends Key, V> {
         if (x.getRight() != null) {
             x.setKey(x.getRight().getKey());
         }
+        x.updateChildren(x.getLeft(), x.getMiddle(), x.getRight());
     }
 
     public void set_children(TreeNode<K,V> x, TreeNode<K, V> l, TreeNode<K, V> m, TreeNode<K, V> r){
@@ -187,6 +200,21 @@ public class TwoThreeTree<K extends Key, V> {
                 }
             }
         }
+    }
+
+    public Float rank(TreeNode<K, V> x){
+        Float rank = 1f;
+        TreeNode<K, V> y = x.getParent();
+        while(y != null){
+            if(x == y.getMiddle()){
+                rank = rank + (Float) y.getLeft().getValue();
+            } else if(x == y.getRight()){
+                rank = rank +(Float) y.getLeft().getValue() + (Float) y.getRight().getValue();
+            }
+            x = y;
+            y = y.getParent();
+        }
+        return rank;
     }
 
 }

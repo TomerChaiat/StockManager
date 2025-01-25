@@ -32,7 +32,8 @@ public class Main {
         long[] updateTimestamps = {8000L, 9000L, 10000L, 11000L, 12000L};
         for (int i = 0; i < priceChanges.length; i++) {
             stockManager.updateStock(targetStock, updateTimestamps[i], priceChanges[i]);
-            System.out.println("Updated stock " + targetStock + " with price change " + priceChanges[i]
+            System.out.println("Updated stock " + targetStock
+                    + " with price change " + priceChanges[i]
                     + " at timestamp " + updateTimestamps[i]);
         }
 
@@ -60,7 +61,8 @@ public class Main {
         // Check the price of stock "C" after timestamp removal
         try {
             Float updatedPriceAfterRemoval = stockManager.getStockPrice(targetStock);
-            System.out.println("Price of stock " + targetStock + " after timestamp removal: " + updatedPriceAfterRemoval);
+            System.out.println("Price of stock " + targetStock
+                    + " after timestamp removal: " + updatedPriceAfterRemoval);
         } catch (Exception e) {
             System.out.println("Error fetching updated price for stock " + targetStock + ": " + e.getMessage());
         }
@@ -77,8 +79,27 @@ public class Main {
             }
         }
 
+        /**
+         * --- ADDITION: Test the getAmountStocksInPriceRange(...) function ---
+         * For example, let's check how many stocks end up between [1.0, 200.0].
+         */
+        System.out.println("\nTesting getAmountStocksInPriceRange:\n");
+        float lowerBound = 1.0f;
+        float upperBound = 200.0f;
+        int countInRange = stockManager.getAmountStocksInPriceRange(lowerBound, upperBound);
+        System.out.println("Number of stocks in price range [" + lowerBound + ", " + upperBound + "] = " + countInRange);
+
+        // Suppose we expect 3 in this range, based on the inserted/updated data.
+        int expectedCount = 3; // Adjust this if your final data changes.
+        if (countInRange != expectedCount) {
+            System.out.println("Test failed: Expected " + expectedCount + " but got " + countInRange);
+        } else {
+            System.out.println("Test passed!");
+        }
+
         System.out.println("\nDone with comprehensive testing of the StockManager.");
     }
+
 }
 
     /*

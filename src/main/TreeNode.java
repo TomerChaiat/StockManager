@@ -89,25 +89,13 @@ public class TreeNode<K extends Key, V> implements Comparable<V>{
 
         // Set infinity or minus infinity, depends on the child's key.
         parent_key.setInf(child_key.isInf());
-
-        /*
-        if (child_key.isInf()){
-            parent_key.setInf(true);
-        }else if (child_key.isMinusInf()){
-            parent_key.setMinusInf(true);
-        }else if (!(child_key.isInf())){
-            parent_key.setInf(false);
-        }else if (!(child_key.isMinusInf())){
-            parent_key.setMinusInf(false);
-        }
-         */
     }
 
     public void updateChildren(TreeNode<K, V> left, TreeNode<K, V> middle, TreeNode<K, V> right) {
         this.setLeft(left);
         this.setMiddle(middle);
         this.setRight(right);
-        if (this.getKey() instanceof LongKey || left.getKey() instanceof LongKey){
+        if (this.getKey() instanceof LongKey || left.getKey() instanceof LongKey || this.getKey() instanceof PriceKey || left.getKey() instanceof PriceKey){
             this.updateSum(left, middle, right);
         }
         if (left != null)
@@ -151,6 +139,17 @@ public class TreeNode<K extends Key, V> implements Comparable<V>{
         StringKey left_key = new StringKey();
         StringKey middle_key = new StringKey();
         StringKey root_key = new StringKey();
+
+        root_key.initializeTree(left_key, middle_key);
+        this.left.setKey((K) left_key);
+        this.middle.setKey((K) middle_key);
+        this.setKey((K) root_key);
+    }
+
+    public void StocksTreePricesInitiate(){
+        PriceKey left_key = new PriceKey();
+        PriceKey middle_key = new PriceKey();
+        PriceKey root_key = new PriceKey();
 
         root_key.initializeTree(left_key, middle_key);
         this.left.setKey((K) left_key);

@@ -17,7 +17,7 @@ public class StringKey extends Key implements Comparable<Key> {
         super.initializeTree(left, right);
     }
 
-    private String getName(){
+    public String getName(){
         return this.name;
     }
 
