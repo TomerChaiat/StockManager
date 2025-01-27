@@ -47,8 +47,8 @@ abstract class Key implements Comparable<Key> {
 
     @Override
     public int compareTo(Key o) {
-        if (this.is_inf && o.is_inf) return 1;
-        if (this.is_minus_inf && o.is_minus_inf) return -1;
+        //if (this.is_inf && o.is_inf) return 1;
+        //if (this.is_minus_inf && o.is_minus_inf) return -1;
         if (o.is_inf || this.is_minus_inf) return -1;
         if (o.is_minus_inf || this.is_inf) return 1;
         return 0;

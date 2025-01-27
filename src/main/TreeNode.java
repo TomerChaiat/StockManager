@@ -8,30 +8,69 @@ public class TreeNode<K extends Key, V> implements Comparable<V>{
     private TreeNode<K, V> left;
     private TreeNode<K, V> middle;
     private TreeNode<K, V> right;
+    private TreeNode<K, V> successor;
+    private TreeNode<K,V> predecessor;
 
-    public TreeNode(K key, V value, TreeNode<K, V> parent, TreeNode<K, V> left, TreeNode<K, V> middle, TreeNode<K, V> right) {
+    public TreeNode(K key, V value, TreeNode<K, V> parent, TreeNode<K, V> left, TreeNode<K, V> middle, TreeNode<K, V> right, TreeNode<K, V> successor, TreeNode<K,V> predecessor) {
         this.key = key;
         this.value = value;
         this.parent = parent;
         this.left = left;
         this.middle = middle;
         this.right = right;
+        this.successor = successor;
+        this.predecessor = predecessor;
+    }
+
+    public TreeNode(TreeNode<K,V> l, TreeNode<K,V> m) {
+        this(null, null, null, l, m, null, null, null);
+        this.getLeft().setSuccessor(m);
+        this.getMiddle().setPredecessor(l);
+    }
+
+    private void setSuccessor(TreeNode<K, V> successor) {
+        this.successor = successor;
+    }
+
+    private void setPredecessor(TreeNode<K, V> predecessor) {
+        this.predecessor = predecessor;
+    }
+
+    public TreeNode(K key, V value, TreeNode<K,V> l, TreeNode<K,V> m){
+        this(key, value, null, l, m, null, null, null);
+        this.getLeft().setSuccessor(m);
+        this.getMiddle().setPredecessor(l);
     }
 
     public TreeNode(K key, V value){
-        this.key = key;
-        this.value = value;
-        this.parent = null;
-        this.left = null;
-        this.middle = null;
-        this.right = null;
+        this(key, value, null, null, null, null, null, null);
+    }
+
+    public void setPredecessorAndSuccessor(TreeNode<K,V> prev, TreeNode<K, V> new_node, TreeNode<K,V> next) {
+        if (new_node == null || !new_node.isLeaf())
+            return;
+
+        if (prev != null) {
+            prev.setSuccessor(new_node);
+            new_node.setPredecessor(prev);
+        }
+
+        if (next != null) {
+            new_node.setSuccessor(next);
+            next.setPredecessor(new_node);
+        }
+    }
+
+    public void setPredecessorAndSuccessor(TreeNode<K,V> prev, TreeNode<K,V> next) {
+        next.setPredecessor(prev);
+        prev.setSuccessor(next);
     }
 
     public TreeNode() {
-        this(null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null, null);
     }
     public TreeNode(K key){
-        this(key, null, null, null, null, null);
+        this(key, null, null, null, null, null, null, null);
     }
 
     public K getKey() {
@@ -183,5 +222,13 @@ public class TreeNode<K extends Key, V> implements Comparable<V>{
             return 0;
         other = (TreeNode<K, V>) o;
         return this.key.compareTo(other.getKey());
+    }
+
+    public TreeNode<K, V> getSuccessor() {
+        return this.successor;
+    }
+
+    public TreeNode<K, V> getPredecessor() {
+        return this.predecessor;
     }
 }

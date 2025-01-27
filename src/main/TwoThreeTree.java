@@ -1,5 +1,7 @@
 package main;
 
+import jdk.nashorn.api.tree.Tree;
+
 public class TwoThreeTree<K extends Key, V> {
 
     private TreeNode<K,V> root;
@@ -7,7 +9,7 @@ public class TwoThreeTree<K extends Key, V> {
     public TwoThreeTree() {
         TreeNode<K,V> l = new TreeNode<>();
         TreeNode<K,V> m = new TreeNode<>();
-        TreeNode<K,V> x = new TreeNode<>();
+        TreeNode<K,V> x = new TreeNode<>(l,m);
         x.updateChildren(l,m,null);
         this.root = x;
     }
@@ -15,7 +17,7 @@ public class TwoThreeTree<K extends Key, V> {
     public TwoThreeTree(boolean val) {
         TreeNode<Key, Float> l = new TreeNode<>(null, 0f);
         TreeNode<Key, Float> m = new TreeNode<>(null, 0f);
-        TreeNode<Key, Float> x = new TreeNode<>(null, 0f);
+        TreeNode<Key, Float> x = new TreeNode<>(null, 0f, l, m);
         x.updateChildren(l,m,null);
         this.root = (TreeNode<K, V>) x;
     }
@@ -31,6 +33,7 @@ public class TwoThreeTree<K extends Key, V> {
     public void PricesTreeInitiate(Long timestamp, Float price) {
         TreeNode<K,V> r = new TreeNode<>();
         this.root.updateChildren(root.getLeft(), root.getMiddle(), r);
+        this.root.setPredecessorAndSuccessor(this.root.getLeft(), root.getMiddle(), r);
         this.root.PricesTreeInitiate(timestamp, price);
     }
 
@@ -114,6 +117,7 @@ public class TwoThreeTree<K extends Key, V> {
 
     public void TwoThreeInsert(TreeNode<K,V> z){
         TreeNode<K,V> y = this.root;
+        TreeNode<K,V> insert = z;
         while(!y.isLeaf()){
             if(z.getKey().compareTo(y.getLeft().getKey()) < 0){
                 y = y.getLeft();
@@ -138,6 +142,56 @@ public class TwoThreeTree<K extends Key, V> {
             set_children(w,x,z,null);
             this.root = w;
         }
+
+        this.root.setPredecessorAndSuccessor(this.predecessor(insert), insert, this.successor(insert));
+    }
+
+    private TreeNode<K,V> successor(TreeNode<K,V> x){
+        TreeNode<K,V> z = x.getParent();
+        TreeNode<K, V> y;
+        while ((x == z.getRight()) || ((z.getRight() == null) && (x == z.getMiddle()))) {
+            x = z;
+            z = z.getParent();
+        }
+
+        if (x == z.getLeft()){
+            y = z.getMiddle();
+        }else{
+            y = z.getRight();
+        }
+        if (y == null)
+            return null;
+
+        while(!y.isLeaf()){
+            y = y.getLeft();
+        }
+        return y;
+    }
+
+    private TreeNode<K,V> predecessor(TreeNode<K,V> x){
+        TreeNode<K,V> z = x.getParent();
+        TreeNode<K, V> y;
+        while ((x == z.getLeft()) || ((z.getLeft() == null) && (x == z.getMiddle()))) {
+            x = z;
+            z = z.getParent();
+        }
+
+        if (x == z.getRight()){
+            y = z.getMiddle();
+        }else{
+            y = z.getLeft();
+        }
+        if (y == null)
+            return null;
+
+        while(!y.isLeaf()){
+            if (y.getRight() != null) {
+                y = y.getRight();
+            }else{
+                y = y.getMiddle();
+            }
+        }
+        return y;
     }
 
     private TreeNode<K, V> borrow_or_merge(TreeNode<K, V> y){
@@ -179,6 +233,7 @@ public class TwoThreeTree<K extends Key, V> {
     }
 
     public void delete(TreeNode<K, V> x){
+        TreeNode<K, V> old_node = x;
         TreeNode<K, V> y = x.getParent();
         if(x == y.getLeft()){
             set_children(y,y.getMiddle(),y.getRight(),null);
@@ -200,6 +255,7 @@ public class TwoThreeTree<K extends Key, V> {
                 }
             }
         }
+        this.root.setPredecessorAndSuccessor(old_node.getPredecessor(), old_node.getSuccessor());
     }
 
     public Float rank(TreeNode<K, V> x){
@@ -207,9 +263,9 @@ public class TwoThreeTree<K extends Key, V> {
         TreeNode<K, V> y = x.getParent();
         while(y != null){
             if(x == y.getMiddle()){
-                rank = rank + (Float) y.getLeft().getValue();
+                rank += (Float) y.getLeft().getValue();
             } else if(x == y.getRight()){
-                rank = rank +(Float) y.getLeft().getValue() + (Float) y.getRight().getValue();
+                rank += (Float) y.getLeft().getValue() + (Float) y.getMiddle().getValue();
             }
             x = y;
             y = y.getParent();

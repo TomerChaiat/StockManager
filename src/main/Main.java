@@ -2,132 +2,40 @@ package main;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        // 1) Create a StockManager and initialize the system
-        StockManager stockManager = new StockManager();
-        stockManager.initStocks();
-        System.out.println("Initialized the StockManager's 2-3 tree.\n");
 
-        // 2) Sample data to insert
-        String[] stockIds = {"A", "B", "C", "D", "E", "F", "G"};
-        long[] timestamps = {1000L, 2000L, 3000L, 4000L, 5000L, 6000L, 7000L};
-        float[] prices = {135.5f, 720.0f, 3205.0f, 245.1f, 2452.1f, 23.0f, 2.0f};
-
-        // 3) Insert each stock
-        for (int i = 0; i < stockIds.length; i++) {
-            stockManager.addStock(stockIds[i], timestamps[i], prices[i]);
-            System.out.println("Added stock: " + stockIds[i]
-                    + " (timestamp=" + timestamps[i]
-                    + ", price=" + prices[i] + ")");
-        }
-
-        System.out.println("\nAll stocks have been added.\n");
-
-        // 4) Test multiple updates to a single stock
-        String targetStock = "C";
-        System.out.println("Testing multiple updates to stock: " + targetStock);
-
-        // Apply updates to stock "C"
-        float[] priceChanges = {500f, -200f, 100f, 300f, -50f};
-        long[] updateTimestamps = {8000L, 9000L, 10000L, 11000L, 12000L};
-        for (int i = 0; i < priceChanges.length; i++) {
-            stockManager.updateStock(targetStock, updateTimestamps[i], priceChanges[i]);
-            System.out.println("Updated stock " + targetStock
-                    + " with price change " + priceChanges[i]
-                    + " at timestamp " + updateTimestamps[i]);
-        }
-
-        // Check the updated price of stock "C"
-        try {
-            Float updatedPrice = stockManager.getStockPrice(targetStock);
-            System.out.println("Updated price of stock " + targetStock + ": " + updatedPrice);
-        } catch (Exception e) {
-            System.out.println("Error fetching updated price for stock " + targetStock + ": " + e.getMessage());
-        }
-
-        System.out.println("\nTesting timestamp removal for stock: " + targetStock);
-
-        // Remove some timestamps from stock "C" and verify the updated sum
-        long[] timestampsToRemove = {3000L, 8000L, 9000L, 10000L, 11000L, 12000L};
-        for (long ts : timestampsToRemove) {
-            try {
-                stockManager.removeStockTimestamp(targetStock, ts);
-                System.out.println("Removed timestamp " + ts + " from stock " + targetStock);
-            } catch (Exception e) {
-                System.out.println("Error removing timestamp " + ts + ": " + e.getMessage());
-            }
-        }
-
-        // Check the price of stock "C" after timestamp removal
-        try {
-            Float updatedPriceAfterRemoval = stockManager.getStockPrice(targetStock);
-            System.out.println("Price of stock " + targetStock
-                    + " after timestamp removal: " + updatedPriceAfterRemoval);
-        } catch (Exception e) {
-            System.out.println("Error fetching updated price for stock " + targetStock + ": " + e.getMessage());
-        }
-
-        System.out.println("\nFinal Verification of All Stocks:\n");
-
-        // Verify the final state of all stocks
-        for (String stockId : stockIds) {
-            try {
-                Float price = stockManager.getStockPrice(stockId);
-                System.out.println("Final price of stock " + stockId + ": " + price);
-            } catch (Exception e) {
-                System.out.println("Error fetching price for stock " + stockId + ": " + e.getMessage());
-            }
-        }
-
-        /**
-         * --- ADDITION: Test the getAmountStocksInPriceRange(...) function ---
-         * For example, let's check how many stocks end up between [1.0, 200.0].
-         */
-        System.out.println("\nTesting getAmountStocksInPriceRange:\n");
-        float lowerBound = 1.0f;
-        float upperBound = 200.0f;
-        int countInRange = stockManager.getAmountStocksInPriceRange(lowerBound, upperBound);
-        System.out.println("Number of stocks in price range [" + lowerBound + ", " + upperBound + "] = " + countInRange);
-
-        // Suppose we expect 3 in this range, based on the inserted/updated data.
-        int expectedCount = 3; // Adjust this if your final data changes.
-        if (countInRange != expectedCount) {
-            System.out.println("Test failed: Expected " + expectedCount + " but got " + countInRange);
-        } else {
-            System.out.println("Test passed!");
-        }
-
-        System.out.println("\nDone with comprehensive testing of the StockManager.");
+    public static void main(String[] args){
+        supercalifragilisticexpialidociousTest();
     }
 
-}
-
-    /*
-    public static void main(String[] args) {
-
+    public static void supercalifragilisticexpialidociousTest() {
         ArrayList<String> stockIds = new ArrayList<>();
-        stockIds.add("ABCDEF");
-        stockIds.add("GHIJKL");
-        stockIds.add("MNOPQR");
-        stockIds.add("STUVWX");
-        stockIds.add("YZABCD");
-        stockIds.add("EFGHIJ");
-        stockIds.add("KLMNOP");
-        stockIds.add("QRSTUV");
-        stockIds.add("WXYZAB");
-        stockIds.add("CDEFGH");
+        stockIds.add("A");
+        stockIds.add("B");
+        stockIds.add("C");
+        stockIds.add("D");
+        stockIds.add("E");
+        stockIds.add("F");
+        stockIds.add("G");
+        stockIds.add("H");
+        stockIds.add("I");
+        stockIds.add("J");
+        stockIds.add("Yoav");
+        stockIds.add("Yuval");
 
         ArrayList<Float> prices = new ArrayList<>();
-        prices.add(123.45f);
-        prices.add(67.89f);
-        prices.add(45.67f);
-        prices.add(234.56f);
-        prices.add(89.01f);
-        prices.add(150.34f);
-        prices.add(98.76f);
-        prices.add(210.45f);
-        prices.add(115.99f);
-        prices.add(300.12f);
+        prices.add(123f);
+        prices.add(456f);
+        prices.add(746f);
+        prices.add(974f);
+        prices.add(352f);
+        prices.add(723f);
+        prices.add(111f);
+        prices.add(555f);
+        prices.add(987f);
+        prices.add(500f);
+        prices.add(746f);
+        prices.add(987f);
+
 
         ArrayList<Long> initialTimestamps = new ArrayList<>();
         initialTimestamps.add(1708647300000L);
@@ -140,123 +48,367 @@ public class Main {
         initialTimestamps.add(1708672500000L);
         initialTimestamps.add(1708676100000L);
         initialTimestamps.add(1708679700000L);
+        initialTimestamps.add(1708661700000L);
+        initialTimestamps.add(1708661700000L);
+
+        StockManager stockManager = new StockManager();
+        stockManager.initStocks();
+
+        System.out.println("\n*************************************************************************************");
+        System.out.println();
+        System.out.println("Test 1 - Insertion:");
+
+        for (int i = 0; i < stockIds.size() - 2; i++) {
+            stockManager.addStock(stockIds.get(i), initialTimestamps.get(i), prices.get(i));
+        }
+
+        System.out.println("YOUR OUTPUT:");
+        String result[] = stockManager.getStocksInPriceRange(0f, 2000f);
+        System.out.println(Arrays.toString(result));
+
+        System.out.println("DESIRED OUTPUT:");
+        printInOrder(stockManager, stockIds);
+        System.out.println();
+
+        System.out.println("Test 1.1 - Trying to insert an existing stock..."); //by stockID
+        try {
+            stockManager.addStock("A", 1708661700000L, 150f);
+            System.out.println("YOUR OUTPUT:");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e);
+        }
+        System.out.println("DESIRED OUTPUT:");
+        System.out.println("java.lang.IllegalArgumentException");
+
+        System.out.println();
+
+        System.out.println("Test 1.2 - Trying to insert a new stock with an existing price in system..."); //by stockID
+        stockManager.addStock(stockIds.get(10), 1708661700000L, prices.get(10));
+        System.out.println("YOUR OUTPUT:");
+        String result2[] = stockManager.getStocksInPriceRange(0f, 2000f);
+        System.out.println(Arrays.toString(result2));
+
+        System.out.println("DESIRED OUTPUT:");
+        printInOrder(stockManager, stockIds);
+        System.out.println("Explanation: Yoav.price = F.price but Yoav > F");
+        System.out.println("\n");
 
 
-        StockManager stockmanger = new StockManager();
-        stockmanger.initStocks();
-        boolean expression = false;
+        System.out.println("Test 1.4 - Trying to insert a new stock with max existing price in system...");
+        float max = max(prices);
+        stockManager.addStock(stockIds.get(11), 1708661700000L, max);
+        System.out.println("YOUR OUTPUT:");
+        String result3[] = stockManager.getStocksInPriceRange(0f, 2000f);
+        System.out.println(Arrays.toString(result3));
+
+        System.out.println("DESIRED OUTPUT:");
+        printInOrder(stockManager, stockIds);
+        System.out.println("Explanation: Yuval.price = I.price but Yuval > I");
+        System.out.println("\n");
+
+        System.out.println("Test 1.5 - Trying to insert a new stock a with negative price...");
+        try {
+            stockManager.addStock("ADI", 1708661700000L, -10f);
+            System.out.println("YOUR OUTPUT:");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e);
+        }
+        System.out.println("DESIRED OUTPUT:");
+        System.out.println("java.lang.IllegalArgumentException");
+
+        System.out.println("Test 1.6 - Trying to insert a new stock a with 0 as price...");
+        try {
+            stockManager.addStock("ADI", 1708661700000L, 0f);
+            System.out.println("YOUR OUTPUT:");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e);
+        }
+        System.out.println("DESIRED OUTPUT:");
+        System.out.println("java.lang.IllegalArgumentException");
+
+        System.out.println("\n*************************************************************************************");
+
+        System.out.println();
+        System.out.println("Test 2 - Deletion:");
+
+        System.out.println("Removing A...");
+        stockManager.removeStock("A");
+        System.out.println("YOUR OUTPUT:");
+        result = stockManager.getStocksInPriceRange(0f, 2000f);
+        System.out.println(Arrays.toString(result));
+        System.out.println("DESIRED OUTPUT:");
+        printInOrder(stockManager, stockIds);
+
+
+        System.out.println("\nTest 2.1 - Removing A again...");
+        try{
+            stockManager.removeStock("A");
+            System.out.println("YOUR OUTPUT:");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e);
+        }
+        System.out.println("DESIRED OUTPUT:");
+        System.out.println("java.lang.IllegalArgumentException");
+
+        System.out.println("\nTest 2.2 - Removing C...");
+        System.out.println("");
+        stockManager.removeStock("C");
+        System.out.println("YOUR OUTPUT:");
+        result = stockManager.getStocksInPriceRange(0f, 2000f);
+        System.out.println(Arrays.toString(result));
+        System.out.println("DESIRED OUTPUT:");
+        printInOrder(stockManager, stockIds);
+
+        System.out.println("\nTest 2.3 - Removing G...");
+        stockManager.removeStock("G");
+        System.out.println("YOUR OUTPUT:");
+        result = stockManager.getStocksInPriceRange(0f, 2000f);
+        System.out.println(Arrays.toString(result));
+        System.out.println("DESIRED OUTPUT:");
+        printInOrder(stockManager, stockIds);
+
+        System.out.println("\nTest 2.4 - Removing J...");
+        stockManager.removeStock("J");
+        System.out.println("YOUR OUTPUT:");
+        result = stockManager.getStocksInPriceRange(0f, 2000f);
+        System.out.println(Arrays.toString(result));
+        System.out.println("DESIRED OUTPUT:");
+        printInOrder(stockManager, stockIds);
+
+        System.out.println("Adding A,C,G,J back...");
+        int[] arr = {0,2,6,9};
+        for (int j = 0; j < 4; j++) {
+            stockManager.addStock(stockIds.get(arr[j]), initialTimestamps.get(arr[j]), prices.get(arr[j]));
+        }
+        System.out.println();
+
+        System.out.println("\nTest 2.5 - Removing non existing stock...");
+        System.out.println("YOUR OUTPUT:");
+        try{
+            stockManager.removeStock("Mika <3");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e);
+        }
+        System.out.println("DESIRED OUTPUT:");
+        System.out.println("java.lang.IllegalArgumentException");
+
+        System.out.println("*************************************************************************************");
+
+
+        System.out.println();
+        System.out.println("Test 3 - Update:");
+
         for (int i = 0; i < stockIds.size(); i++) {
-            stockmanger.addStock(stockIds.get(i), initialTimestamps.get(i), prices.get(i));
-            expression = stockmanger.getStockPrice(stockIds.get(i)).equals(prices.get(i));
-            Assert(expression);
+            stockManager.updateStock(stockIds.get(i), initialTimestamps.get(i) + 1l, i + 1f);
         }
-        for (int i = 0; i < 3; i++) {
-            String stockIdToRemove = stockIds.remove(0);
-            prices.remove(0);
-            initialTimestamps.remove(0);
-            stockmanger.removeStock(stockIdToRemove);
+
+        for (int i = 0; i < stockIds.size(); i++) {
+            stockManager.updateStock(stockIds.get(i), initialTimestamps.get(i) + 2l, i + 4f);
+        }
+
+        stockManager.updateStock(stockIds.get(1), initialTimestamps.get(1) + 3l, 200f);
+        stockManager.updateStock(stockIds.get(8), initialTimestamps.get(8) + 3l, -100f);
+        stockManager.updateStock(stockIds.get(6), initialTimestamps.get(6) + 3l, 300f);
+
+
+        System.out.println("YOUR OUTPUT:");
+        result = stockManager.getStocksInPriceRange(0f, 2000f);
+        System.out.println(Arrays.toString(result));
+
+        System.out.println("DESIRED OUTPUT:");
+        printInOrder(stockManager,stockIds);
+        System.out.println();
+
+
+        System.out.println("Test 3.1 - Trying to add change with 0");
+        try{
+            stockManager.updateStock(stockIds.get(1), initialTimestamps.get(1) + 3l, 0f);
+            System.out.println("YOUR OUTPUT:");
+        }catch (IllegalArgumentException e) {
+            System.out.println(e);
+        }
+        System.out.println("DESIRED OUTPUT:");
+        System.out.println("java.lang.IllegalArgumentException\n");
+
+
+        System.out.println("*************************************************************************************");
+
+
+
+        System.out.println();
+        System.out.println("Test 4 - Removing Timestamp:");
+
+        System.out.println("Removing Timestamp for Stock B:");
+        System.out.println("Your current price of B: " + stockManager.getStockPrice("B")); //FROM LINE 126
+        System.out.println("Desired current price of B: 663.0");
+        stockManager.removeStockTimestamp("B", initialTimestamps.get(1) + 3l);
+        System.out.println("Your current price of B after timestamp remove: " + stockManager.getStockPrice("B"));
+        System.out.println("Desired current price of B timestamp remove: 463.0 \n");
+
+        System.out.println("YOUR OUTPUT:");
+        result = stockManager.getStocksInPriceRange(0f, 2000f);
+        System.out.println(Arrays.toString(result));
+        System.out.println("DESIRED OUTPUT:");
+        printInOrder(stockManager, stockIds);
+        System.out.println();
+
+        System.out.println("*************************************************************************************");
+
+        System.out.println();
+        System.out.println("Test 5 - Stocks in Range:");
+
+        System.out.println("Printing the prices...");
+
+        printInOrderWithPrices(stockManager,stockIds);
+        System.out.println();
+
+        System.out.println("Stocks in Range [100, 800]:");
+        result = stockManager.getStocksInPriceRange(100f, 800f);
+        System.out.println("YOUR OUTPUT:");
+        System.out.println(Arrays.toString(result));
+        System.out.println("DESIRED OUTPUT:");
+        System.out.println("[A, E, G, B, J, H, F, C, Yoav]\n");
+
+        System.out.println("Stocks in Range [574, 574]:");
+        result = stockManager.getStocksInPriceRange(574f, 574f);
+        System.out.println("YOUR OUTPUT:");
+        System.out.println(Arrays.toString(result));
+        System.out.println("DESIRED OUTPUT:");
+        System.out.println("[H]\n");
+
+        System.out.println("Stocks in Range [1, 3]:");
+        result = stockManager.getStocksInPriceRange(1f, 3f);
+        System.out.println("YOUR OUTPUT:");
+        System.out.println(Arrays.toString(result));
+        System.out.println("DESIRED OUTPUT:");
+        System.out.println("[]\n");
+
+        System.out.println("Stocks in Range [3, 1]:");
+        try{
+            result = stockManager.getStocksInPriceRange(3f, 1f);
+        }catch (IllegalArgumentException e) {
+            System.out.println("YOUR OUTPUT:");
+            System.out.println(e);
+            System.out.println("DESIRED OUTPUT:");
+            System.out.println("java.lang.IllegalArgumentException");
+        }
+
+        System.out.println("\n*************************************************************************************\n");
+
+        System.out.println("Test 6 - Invalid Operations:\n");
+
+        System.out.println();
+        System.out.println("Trying to update non-existent stock:");
+        try {
+            stockManager.updateStock("Z", 1708650900000L, 50f);
+        } catch (IllegalArgumentException e) {
+            System.out.println("YOUR OUTPUT:");
+            System.out.println(e);
+            System.out.println("DESIRED OUTPUT:");
+            System.out.println("java.lang.IllegalArgumentException\n");
+        }
+
+        System.out.println();
+        System.out.println("Trying to get stock price of non-existent stock:");
+        try {
+            stockManager.getStockPrice("Z");
+        } catch (IllegalArgumentException e) {
+            System.out.println("YOUR OUTPUT:");
+            System.out.println(e);
+            System.out.println("DESIRED OUTPUT:");
+            System.out.println("java.lang.IllegalArgumentException\n");
+        }
+
+        System.out.println("Trying to update time stamp that not exist...");
+        try {
+            stockManager.removeStockTimestamp("A", 1708654500001L);
+        } catch (IllegalArgumentException e) {
+            System.out.println("YOUR OUTPUT:");
+            System.out.println(e);
+            System.out.println("DESIRED OUTPUT:");
+            System.out.println("java.lang.IllegalArgumentException");
+        }
+
+        System.out.println("\nTrying to remove the first change...");
+        try{
+            stockManager.removeStockTimestamp(stockIds.get(1), initialTimestamps.get(1));
+        }catch (IllegalArgumentException e) {
+            System.out.println("YOUR OUTPUT:");
+            System.out.println(e);
+            System.out.println("DESIRED OUTPUT:");
+            System.out.println("java.lang.IllegalArgumentException\n");
+        }
+
+
+        System.out.println("*************************************************************************************");
+
+    }
+
+    private static float max(ArrayList<Float> prices) {
+        float max = Float.MIN_VALUE;
+        for (int i = 0; i < prices.size(); i++) {
+            if (prices.get(i) > max) {
+                max = prices.get(i);
+            }
+        }
+        return max;
+    }
+
+    private static void printInOrderWithPrices(StockManager stockManager, ArrayList<String> stockIds) {
+        // יצירת רשימה של אובייקטים שמכילים את שם המניה והמחיר שלה
+        ArrayList<Map.Entry<String, Float>> stockList = new ArrayList<>();
+        boolean first = true;
+
+        for (int i = 0; i < stockIds.size(); i++) {
             try{
-                stockmanger.getStockPrice(stockIdToRemove) ;
-                System.out.println("Test failed: Exception was not thrown");
+                Float price = stockManager.getStockPrice(stockIds.get(i));
+                stockList.add(new AbstractMap.SimpleEntry<>(stockIds.get(i), price));
             }
-            catch (IllegalArgumentException e) {
-                System.out.println("Test passed: Exception was thrown as expected");
+            catch (IllegalArgumentException e) {}
+        }
+
+        // מיון הרשימה לפי המחירים (מהנמוך לגבוה)
+        stockList.sort(Map.Entry.comparingByValue());
+
+        // הדפסת המחירים בסדר הנכון
+        System.out.print("[");
+        for (Map.Entry<String, Float> entry : stockList) {
+            if(!first){
+                System.out.print(", ");
             }
-            catch (Exception e) {
-                System.out.println("Test failed: An unexpected exception was thrown");
-            }
-            Assert(expression);
-            System.out.println("Removed Stock: " + stockIdToRemove);
-
+            first = false;
+            System.out.print("(" + entry.getKey() + " , " + entry.getValue() + ")");
         }
-        Map<String, ArrayList<Map.Entry<Long, Float>>> additionalData = new HashMap<>();
-
-        // Adding additional timestamps and price changes based on original timestamps
-        ArrayList<Map.Entry<Long, Float>> data1 = new ArrayList<>();
-        data1.add(Map.entry(initialTimestamps.get(0) + 60000L, 5.67f)); // Add 1 minute
-        data1.add(Map.entry(initialTimestamps.get(0) + 120000L, -3.21f)); // Add 2 minutes
-        additionalData.put("STUVWX", data1);
-
-        ArrayList<Map.Entry<Long, Float>> data2 = new ArrayList<>();
-        data2.add(Map.entry(initialTimestamps.get(1) + 300000L, 7.89f)); // Add 5 minutes
-        additionalData.put("YZABCD", data2);
-
-        ArrayList<Map.Entry<Long, Float>> data3 = new ArrayList<>();
-        data3.add(Map.entry(initialTimestamps.get(2) + 60000L, -2.34f)); // Add 1 minute
-        data3.add(Map.entry(initialTimestamps.get(2) + 180000L, 4.56f)); // Add 3 minutes
-        data3.add(Map.entry(initialTimestamps.get(2) + 300000L, -1.78f)); // Add 5 minutes
-        additionalData.put("EFGHIJ", data3);
-
-        for (int i = 0; i < 3; i++){
-            String StockId = stockIds.get(i);
-            ArrayList<Map.Entry<Long, Float>> data = additionalData.get(StockId);
-            for (Map.Entry<Long, Float> entry : data){
-                stockmanger.updateStock(StockId,entry.getKey() ,entry.getValue());
-            }
-
-        }
-        expression = stockmanger.getStockPrice("STUVWX") == 237.02f;
-        Assert(expression);
-        expression = stockmanger.getStockPrice("YZABCD") == 96.9f;
-        Assert(expression);
-        expression = stockmanger.getStockPrice("EFGHIJ") == 150.78f;
-        Assert(expression);
-
-
-        for (String stockId : stockIds) {
-            double price = stockmanger.getStockPrice(stockId);
-            System.out.println("Stock ID: " + stockId + ", Current Price: " + price);
-        }
-        if (additionalData.containsKey("STUVWX")) {
-            ArrayList<Map.Entry<Long, Float>> stockData = additionalData.get("STUVWX");
-            stockmanger.removeStockTimestamp("STUVWX", stockData.get(1).getKey());
-            stockData.remove(1);
-        }
-        if (additionalData.containsKey("EFGHIJ")) {
-            ArrayList<Map.Entry<Long, Float>> stockData = additionalData.get("EFGHIJ");
-            stockmanger.removeStockTimestamp("EFGHIJ", stockData.get(2).getKey());
-            stockmanger.removeStockTimestamp("EFGHIJ", stockData.get(0).getKey());
-        }
-        for (String stockId : stockIds) {
-            double price = stockmanger.getStockPrice(stockId);
-            System.out.println("Stock ID: " + stockId + ", Current Price: " + price);
-        }
-        expression = stockmanger.getStockPrice("STUVWX") == 240.23f;
-        Assert(expression);
-        expression = stockmanger.getStockPrice("EFGHIJ") == 154.9f;
-        Assert(expression);
-        Float price1 = 10f;
-        Float price2 = 30f;
-        int stockamount = stockmanger.getAmountStocksInPriceRange(price1, price2);
-        expression =  stockamount == 0;
-        Assert(expression);
-        System.out.println(stockmanger.getStocksInPriceRange(price1, price2));
-        price1 = 50f;
-        price2 = 170f;
-        stockamount = stockmanger.getAmountStocksInPriceRange(price1, price2);
-        expression = stockamount == 4;
-        Assert(expression);
-        System.out.println(stockamount);
-        String[] stocksInRange = stockmanger.getStocksInPriceRange(price1, price2);
-        expression = stocksInRange[0] == "YZABCD";
-        Assert(expression);
-        expression = stocksInRange[1] == "KLMNOP";
-        Assert(expression);
-        expression = stocksInRange[2] == "WXYZAB";
-        Assert(expression);
-        expression = stocksInRange[3] == "EFGHIJ";
-        Assert(expression);
-        for (String stock : stocksInRange) {
-            System.out.println(stock);
-        }
-    }
-    public static void Assert(boolean expression){
-        if (!expression){
-            throw new AssertionError();
-        }
+        System.out.println("]");
     }
 
+    private static void printInOrder(StockManager stockManager, ArrayList<String> stockIds) {
+        // יצירת רשימה של אובייקטים שמכילים את שם המניה והמחיר שלה
+        boolean first = true;
+        ArrayList<Map.Entry<String, Float>> stockList = new ArrayList<>();
+        for (int i = 0; i < stockIds.size(); i++) {
+            try{
+                Float price = stockManager.getStockPrice(stockIds.get(i));
+                stockList.add(new AbstractMap.SimpleEntry<>(stockIds.get(i), price));
+            }
+            catch (IllegalArgumentException e) {}
+        }
 
+        // מיון הרשימה לפי המחירים (מהנמוך לגבוה)
+        stockList.sort(Map.Entry.comparingByValue());
+
+        // הדפסת המחירים בסדר הנכון
+        System.out.print("[");
+        for (Map.Entry<String, Float> entry : stockList) {
+            if(!first){
+                System.out.print(", ");
+            }
+            first = false;
+            System.out.print(entry.getKey());
+        }
+        System.out.println("]");
+    }
 }
 
-     */
+
+

@@ -17,6 +17,12 @@ public class StockManager {
 
     // 2. Add a new stock
     public void addStock(String stockId, long timestamp, Float price) {
+        if (price <= 0)
+            throw new IllegalArgumentException("Price must be greater than zero");
+        StringKey searchKey = new StringKey(stockId);
+        TreeNode<StringKey, TwoThreeTree<LongKey, Float>> desired = stocks.search(stocks.getRoot(), searchKey);
+        if (desired != null)
+            throw new IllegalArgumentException("Stock ID '" + stockId + "' is already in the system.");
         TwoThreeTree<LongKey, Float> stockTree = new TwoThreeTree<>();
         stockTree.PricesTreeInitiate(timestamp, price);
         this.stocks.TwoThreeInsert(new TreeNode<>(new StringKey(stockId), stockTree));
@@ -39,6 +45,8 @@ public class StockManager {
 
     // 4. Update a stock price
     public void updateStock(String stockId, long timestamp, Float priceDifference) {
+        if (priceDifference == 0)
+            throw new IllegalArgumentException("Price difference cannot be zero");
         StringKey searchKey = new StringKey(stockId);
         TreeNode<StringKey, TwoThreeTree<LongKey, Float>> desired = stocks.search(stocks.getRoot(), searchKey);
         if (desired == null) {
@@ -85,12 +93,16 @@ public class StockManager {
         Float old_price = stock_tree.getRoot().getValue();
         PriceKey price_key = new PriceKey(stockId, old_price);
         TreeNode<PriceKey, Float> desired_price = stocksPrices.search(stocksPrices.getRoot(), price_key);
-        desired_price.getKey().updatePrice(-search_key.getChange());
+        this.stocksPrices.delete(desired_price);
+        this.stocksPrices.TwoThreeInsert(new TreeNode<>(new PriceKey(stockId, old_price - search_key.getChange()), 1f));
         stock_tree.delete(desired_timestamp);
     }
 
     // 7. Get the amount of stocks in a given price range
     public int getAmountStocksInPriceRange(Float price1, Float price2) {
+        if (price1 > price2) {
+            throw new IllegalArgumentException("Price 1 must be greater than Price 2");
+        }
         PriceKey left = new PriceKey(new StringKey(null), price1, false);
         PriceKey right = new PriceKey(new StringKey(null), price2, true);
 
@@ -105,13 +117,24 @@ public class StockManager {
         return total;
     }
 
-    /*
     // 8. Get a list of stock IDs within a given price range
     public String[] getStocksInPriceRange(Float price1, Float price2) {
-        // add code here
+        if (price1 > price2) {
+            throw new IllegalArgumentException("Price 1 must be greater than Price 2");
+        }
+        int length = getAmountStocksInPriceRange(price1, price2);
+        String[] stocks_in_range = new String[length];
+        PriceKey left = new PriceKey(new StringKey(null), price1, false);
+        TreeNode<PriceKey, Float> left_node = new TreeNode<>(left, 1f);
+        this.stocksPrices.TwoThreeInsert(left_node);
+        TreeNode<PriceKey, Float> right_brother = left_node.getSuccessor();
+        for (int i = 0; i < length; i++) {
+            stocks_in_range[i] = right_brother.getKey().getName();
+            right_brother = right_brother.getSuccessor();
+        }
+        this.stocksPrices.delete(left_node);
+        return stocks_in_range;
     }
-
-     */
 }
 
 

@@ -29,7 +29,7 @@ public class PriceKey extends Key {
         super.initializeTree(left, right);
     }
 
-    private String getName(){
+    public String getName(){
         return this.name.getName();
     }
 
