@@ -11,12 +11,16 @@ public class StockManager {
 
     // 1. Initialize the system
     public void initStocks() {
+        this.stocks = new TwoThreeTree<>();
         this.stocks.StocksTreeInitiate();
+        this.stocksPrices = new TwoThreeTree<>(true);
         this.stocksPrices.StocksPricesTreeInitiate();
     }
 
     // 2. Add a new stock
     public void addStock(String stockId, long timestamp, Float price) {
+        if (timestamp < 0)
+            throw new IllegalArgumentException("Timestamp cannot be negative");
         if (price <= 0)
             throw new IllegalArgumentException("Price must be greater than zero");
         StringKey searchKey = new StringKey(stockId);
@@ -45,6 +49,8 @@ public class StockManager {
 
     // 4. Update a stock price
     public void updateStock(String stockId, long timestamp, Float priceDifference) {
+        if (timestamp < 0)
+            throw new IllegalArgumentException("Timestamp cannot be negative");
         if (priceDifference == 0)
             throw new IllegalArgumentException("Price difference cannot be zero");
         StringKey searchKey = new StringKey(stockId);
