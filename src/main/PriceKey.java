@@ -37,25 +37,6 @@ public class PriceKey extends Key {
         this.price += price;
     }
 
-    /*
-    @Override
-    public int compareTo(Key o) {
-        if (!(o instanceof PriceKey)) {
-            return 0;
-        }
-        PriceKey other = (PriceKey) o;
-        if (super.compareTo(other) != 0){
-            return super.compareTo(other);
-        }else{
-            int val = this.price.compareTo(other.price);
-            if (val == 0){
-                return this.name.compareTo(other.name);
-            }
-            return val;
-        }
-    }
-     */
-
     @Override
     public int compareTo(Key o) {
         if (!(o instanceof PriceKey)) {
@@ -66,7 +47,7 @@ public class PriceKey extends Key {
         if (super.compareTo(other) != 0){
             return super.compareTo(other);
         } else {
-            float epsilon = 0.01f;
+            float epsilon = 0.001f;
             if (Math.abs(this.price - other.price) < epsilon) {
                 return this.name.compareTo(other.name);
             }
