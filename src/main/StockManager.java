@@ -16,8 +16,8 @@ public class StockManager {
      * Default constructor that initializes the stock manager.
      */
     public StockManager() {
-        this.stocks = new TwoThreeTree<>();
-        this.stocksPrices = new TwoThreeTree<>(true);
+        this.stocks = null;
+        this.stocksPrices = null;
     }
 
     /**
