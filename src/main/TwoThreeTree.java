@@ -1,11 +1,19 @@
 package main;
 
-import jdk.nashorn.api.tree.Tree;
-
+/**
+ * TwoThreeTree is a generic implementation of a 2-3 tree data structure.
+ * It supports keys that extend Key and associated values.
+ * The tree offers operations such as insertion, deletion, search, and rank determination.
+ *
+ * @param <K> The type of keys (extending Key).
+ * @param <V> The type of associated values.
+ */
 public class TwoThreeTree<K extends Key, V> {
+    private TreeNode<K,V> root; // The root of the tree.
 
-    private TreeNode<K,V> root;
-
+    /**
+     * Default constructor that initializes the tree with sentinel nodes.
+     */
     public TwoThreeTree() {
         TreeNode<K,V> l = new TreeNode<>();
         TreeNode<K,V> m = new TreeNode<>();
@@ -14,6 +22,11 @@ public class TwoThreeTree<K extends Key, V> {
         this.root = x;
     }
 
+    /**
+     * Constructor that initializes a tree for stock prices.
+     *
+     * @param val A boolean flag (used to indicate special initialization).
+     */
     public TwoThreeTree(boolean val) {
         TreeNode<Key, Float> l = new TreeNode<>(null, 0f);
         TreeNode<Key, Float> m = new TreeNode<>(null, 0f);
@@ -22,14 +35,26 @@ public class TwoThreeTree<K extends Key, V> {
         this.root = (TreeNode<K, V>) x;
     }
 
+    /**
+     * Initiates the stocks tree structure.
+     */
     public void StocksTreeInitiate(){
         this.root.StocksTreeInitiate();
     }
 
+    /**
+     * Initiates the stocks prices tree structure.
+     */
     public void StocksPricesTreeInitiate(){
         this.root.StocksTreePricesInitiate();
     }
 
+    /**
+     * Initializes the prices tree with the given timestamp and price.
+     *
+     * @param timestamp The starting timestamp.
+     * @param price     The starting price.
+     */
     public void PricesTreeInitiate(Long timestamp, Float price) {
         TreeNode<K,V> r = new TreeNode<>();
         this.root.updateChildren(root.getLeft(), root.getMiddle(), r);
@@ -37,6 +62,13 @@ public class TwoThreeTree<K extends Key, V> {
         this.root.PricesTreeInitiate(timestamp, price);
     }
 
+    /**
+     * Searches for a node with the specified key.
+     *
+     * @param x The node to start searching from.
+     * @param k The key to search for.
+     * @return The node containing the key, or null if not found.
+     */
     public TreeNode<K, V> search(TreeNode<K, V> x, K k) {
         TreeNode<K, V> k_node = new TreeNode<>(k);
         if (x.isLeaf()) {
@@ -55,10 +87,20 @@ public class TwoThreeTree<K extends Key, V> {
         }
     }
 
+    /**
+     * Returns the root node of the tree.
+     *
+     * @return The root node.
+     */
     public TreeNode<K, V> getRoot(){
         return this.root;
     }
 
+    /**
+     * Updates the key of a node based on its children.
+     *
+     * @param x The node to update.
+     */
     private void update_key(TreeNode<K, V> x){
         x.setKey(x.getLeft().getKey());
         if (x.getMiddle() != null) {
@@ -70,6 +112,14 @@ public class TwoThreeTree<K extends Key, V> {
         x.updateChildren(x.getLeft(), x.getMiddle(), x.getRight());
     }
 
+    /**
+     * Sets the children of a node and updates their parent pointers.
+     *
+     * @param x The parent node.
+     * @param l The left child.
+     * @param m The middle child.
+     * @param r The right child.
+     */
     public void set_children(TreeNode<K,V> x, TreeNode<K, V> l, TreeNode<K, V> m, TreeNode<K, V> r){
         x.updateChildren(l,m,r);
         l.updateParent(x);
@@ -82,6 +132,13 @@ public class TwoThreeTree<K extends Key, V> {
         update_key(x);
     }
 
+    /**
+     * Inserts a node into the tree and splits the node if necessary.
+     *
+     * @param x The node into which to insert.
+     * @param z The node to insert.
+     * @return A new node if a split occurs, or null otherwise.
+     */
     private TreeNode<K, V> insert_and_split(TreeNode<K, V> x, TreeNode<K, V> z){
         TreeNode<K, V> l = x.getLeft();
         TreeNode<K, V> m = x.getMiddle();
@@ -115,6 +172,11 @@ public class TwoThreeTree<K extends Key, V> {
         return y;
     }
 
+    /**
+     * Inserts a new node into the 2-3 tree.
+     *
+     * @param z The node to be inserted.
+     */
     public void TwoThreeInsert(TreeNode<K,V> z){
         TreeNode<K,V> y = this.root;
         TreeNode<K,V> insert = z;
@@ -146,6 +208,12 @@ public class TwoThreeTree<K extends Key, V> {
         this.root.setPredecessorAndSuccessor(this.predecessor(insert), insert, this.successor(insert));
     }
 
+    /**
+     * Finds the successor of a given node.
+     *
+     * @param x The node whose successor is to be found.
+     * @return The successor node, or null if none exists.
+     */
     private TreeNode<K,V> successor(TreeNode<K,V> x){
         TreeNode<K,V> z = x.getParent();
         TreeNode<K, V> y;
@@ -168,6 +236,12 @@ public class TwoThreeTree<K extends Key, V> {
         return y;
     }
 
+    /**
+     * Finds the predecessor of a given node.
+     *
+     * @param x The node whose predecessor is to be found.
+     * @return The predecessor node, or null if none exists.
+     */
     private TreeNode<K,V> predecessor(TreeNode<K,V> x){
         TreeNode<K,V> z = x.getParent();
         TreeNode<K, V> y;
@@ -194,6 +268,12 @@ public class TwoThreeTree<K extends Key, V> {
         return y;
     }
 
+    /**
+     * Balances the tree by borrowing or merging nodes during deletion.
+     *
+     * @param y The node to be rebalanced.
+     * @return The parent node after rebalancing.
+     */
     private TreeNode<K, V> borrow_or_merge(TreeNode<K, V> y){
         TreeNode<K, V> z = y.getParent();
         if (z == null){
@@ -232,8 +312,12 @@ public class TwoThreeTree<K extends Key, V> {
         return z;
     }
 
+    /**
+     * Deletes a node from the tree.
+     *
+     * @param x The node to be deleted.
+     */
     public void delete(TreeNode<K, V> x){
-        TreeNode<K, V> old_node = x;
         TreeNode<K, V> y = x.getParent();
         if(x == y.getLeft()){
             set_children(y,y.getMiddle(),y.getRight(),null);
@@ -255,18 +339,27 @@ public class TwoThreeTree<K extends Key, V> {
                 }
             }
         }
-        this.root.setPredecessorAndSuccessor(old_node.getPredecessor(), old_node.getSuccessor());
+        this.root.setPredecessorAndSuccessor(x.getPredecessor(), x.getSuccessor());
     }
 
+    /**
+     * Determines the rank of a leaf node (i.e., the number of leaves that are smaller than it).
+     *
+     * @param x The leaf node.
+     * @return The rank as a Float value.
+     */
     public Float rank(TreeNode<K, V> x){
         Float rank = 1f;
         TreeNode<K, V> y = x.getParent();
         while(y != null){
+            // If arriving at the parent via the middle, add all nodes from the left child.
             if(x == y.getMiddle()){
                 rank += (Float) y.getLeft().getValue();
             } else if(x == y.getRight()){
+                // If arriving via the right, add nodes from both left and middle.
                 rank += (Float) y.getLeft().getValue() + (Float) y.getMiddle().getValue();
             }
+            // There is no otherwise, since if arriving via the left we are not greater than anyone (at this level).
             x = y;
             y = y.getParent();
         }

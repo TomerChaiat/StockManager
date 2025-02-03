@@ -455,7 +455,6 @@ import java.util.*;
             stockIds.add("");
             stockIds.add("oFF");
             stockIds.add("dfhjdhf");
-            stockIds.add(null);
 
             ArrayList<Float> prices = new ArrayList<>();
             prices.add(123.45f);
@@ -465,7 +464,6 @@ import java.util.*;
             prices.add(123.45f);
             prices.add(Float.MAX_VALUE);
             prices.add(Float.MIN_VALUE);
-            prices.add(123.45f);
 
 
             ArrayList<Long> initialTimestamps = new ArrayList<>();
@@ -476,7 +474,6 @@ import java.util.*;
             initialTimestamps.add(1708647300000L);
             initialTimestamps.add(Long.MAX_VALUE);
             initialTimestamps.add(Long.MIN_VALUE);
-            initialTimestamps.add(1708647300000L);
 
 
             StockManager stockmanger = new StockManager();

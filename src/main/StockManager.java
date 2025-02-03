@@ -1,15 +1,28 @@
 package main;
 
+/**
+ * StockManager manages a collection of stocks and their price histories.
+ * It uses two 2-3 trees:
+ * <ul>
+ *   <li>One maps a stock ID (using StringKey) to its price history (another 2-3 tree).</li>
+ *   <li>The other manages stock prices (using PriceKey) for range queries.</li>
+ * </ul>
+ */
 public class StockManager {
-    private TwoThreeTree<StringKey, TwoThreeTree<LongKey, Float>> stocks;
-    private TwoThreeTree<PriceKey, Float> stocksPrices;
+    private TwoThreeTree<StringKey, TwoThreeTree<LongKey, Float>> stocks; // Maps stock IDs to their price histories.
+    private TwoThreeTree<PriceKey, Float> stocksPrices;                   // Tree for stock prices (for range queries).
 
+    /**
+     * Default constructor that initializes the stock manager.
+     */
     public StockManager() {
         this.stocks = new TwoThreeTree<>();
         this.stocksPrices = new TwoThreeTree<>(true);
     }
 
-    // 1. Initialize the system
+    /**
+     * Initializes the system by setting up the stocks and stock prices trees.
+     */
     public void initStocks() {
         this.stocks = new TwoThreeTree<>();
         this.stocks.StocksTreeInitiate();
@@ -17,7 +30,14 @@ public class StockManager {
         this.stocksPrices.StocksPricesTreeInitiate();
     }
 
-    // 2. Add a new stock
+    /**
+     * Adds a new stock.
+     *
+     * @param stockId   The unique stock identifier.
+     * @param timestamp The timestamp of the initial price.
+     * @param price     The initial price of the stock.
+     * @throws IllegalArgumentException if the stock already exists or parameters are invalid.
+     */
     public void addStock(String stockId, long timestamp, Float price) {
         if (timestamp < 0)
             throw new IllegalArgumentException("Timestamp cannot be negative");
@@ -33,7 +53,12 @@ public class StockManager {
         this.stocksPrices.TwoThreeInsert(new TreeNode<>(new PriceKey(stockId, price), 1f));
     }
 
-    // 3. Remove a stock
+    /**
+     * Removes a stock from the system.
+     *
+     * @param stockId The stock identifier.
+     * @throws IllegalArgumentException if the stock is not found.
+     */
     public void removeStock(String stockId) {
         StringKey searchKey = new StringKey(stockId);
         TreeNode<StringKey, TwoThreeTree<LongKey, Float>> desired = stocks.search(stocks.getRoot(), searchKey);
@@ -47,7 +72,14 @@ public class StockManager {
         stocksPrices.delete(stocksPrices.search(stocksPrices.getRoot(), price_key));
     }
 
-    // 4. Update a stock price
+    /**
+     * Updates a stock's price.
+     *
+     * @param stockId         The stock identifier.
+     * @param timestamp       The timestamp of the update.
+     * @param priceDifference The amount by which the price changes.
+     * @throws IllegalArgumentException if the stock is not found or parameters are invalid.
+     */
     public void updateStock(String stockId, long timestamp, Float priceDifference) {
         if (timestamp < 0)
             throw new IllegalArgumentException("Timestamp cannot be negative");
@@ -68,7 +100,13 @@ public class StockManager {
         stock_tree.TwoThreeInsert(new TreeNode(new LongKey(timestamp, priceDifference), priceDifference));
     }
 
-    // 5. Get the current price of a stock
+    /**
+     * Retrieves the current price of a stock.
+     *
+     * @param stockId The stock identifier.
+     * @return The current price.
+     * @throws IllegalArgumentException if the stock is not found.
+     */
     public Float getStockPrice(String stockId) {
         StringKey searchKey = new StringKey(stockId);
         TreeNode<StringKey, TwoThreeTree<LongKey, Float>> desired = stocks.search(stocks.getRoot(), searchKey);
@@ -79,7 +117,13 @@ public class StockManager {
         return stock_tree.getRoot().getValue();
     }
 
-    // 6. Remove a specific timestamp from a stock's history
+    /**
+     * Removes a specific timestamp from a stock's history.
+     *
+     * @param stockId   The stock identifier.
+     * @param timestamp The timestamp to remove.
+     * @throws IllegalArgumentException if the stock or timestamp is not found or cannot be deleted.
+     */
     public void removeStockTimestamp(String stockId, long timestamp) {
         StringKey searchKey = new StringKey(stockId);
         TreeNode<StringKey, TwoThreeTree<LongKey, Float>> desired = stocks.search(stocks.getRoot(), searchKey);
@@ -104,7 +148,14 @@ public class StockManager {
         stock_tree.delete(desired_timestamp);
     }
 
-    // 7. Get the amount of stocks in a given price range
+    /**
+     * Returns the number of stocks in the given price range.
+     *
+     * @param price1 The lower bound of the price range.
+     * @param price2 The upper bound of the price range.
+     * @return The count of stocks within the range.
+     * @throws IllegalArgumentException if the price range is invalid.
+     */
     public int getAmountStocksInPriceRange(Float price1, Float price2) {
         if (price1 > price2) {
             throw new IllegalArgumentException("Price 1 must be greater than Price 2");
@@ -123,7 +174,14 @@ public class StockManager {
         return total;
     }
 
-    // 8. Get a list of stock IDs within a given price range
+    /**
+     * Returns an array of stock identifiers within the given price range.
+     *
+     * @param price1 The lower bound of the price range.
+     * @param price2 The upper bound of the price range.
+     * @return An array of stock IDs.
+     * @throws IllegalArgumentException if the price range is invalid.
+     */
     public String[] getStocksInPriceRange(Float price1, Float price2) {
         if (price1 > price2) {
             throw new IllegalArgumentException("Price 1 must be greater than Price 2");
