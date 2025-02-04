@@ -43,7 +43,7 @@ This project is a Java-based stock management system that uses a generic 2-3 tre
    git clone https://github.com/TomerChaiat/StockManager.git
    cd StockManager
 
-2.	Open the project in your preferred IDE (e.g., IntelliJ IDEA or Eclipse).
+2. Open the project in your preferred IDE (e.g., IntelliJ IDEA or Eclipse).
 	•	Ensure the IDE is configured to use Java 8 or higher.
 	•	Import the project as a standard Java project, making sure the package structure under src/main/ is preserved.
 
