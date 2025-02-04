@@ -36,10 +36,9 @@ This project is a Java-based stock management system that uses a generic 2-3 tre
 
 - Java Development Kit (JDK) 8 or higher
 
-### Cloning the Repository
+# Setup Instructions
 
-You can clone the repository using the following commands:
-
-```bash
-git clone https://github.com/TomerChaiat/StockManager.git
-cd StockManager
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/TomerChaiat/StockManager.git
+   cd StockManager
