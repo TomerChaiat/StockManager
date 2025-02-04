@@ -41,5 +41,5 @@ This project is a Java-based stock management system that uses a generic 2-3 tre
 You can clone the repository using the following commands:
 
 ```bash
-git clone https://github.com/TomerChaiat/EfficientDataStructure-For-StockManager.git
-cd EfficientDataStructure-For-StockManager
+git clone https://github.com/TomerChaiat/StockManager.git
+cd StockManager
