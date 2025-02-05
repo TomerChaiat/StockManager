@@ -44,23 +44,23 @@ This project is a Java-based stock management system that uses a generic 2-3 tre
    cd StockManager
 
 2. Open the project in your preferred IDE (e.g., IntelliJ IDEA or Eclipse).
-	•	Ensure the IDE is configured to use Java 8 or higher.
-	•	Import the project as a standard Java project, making sure the package structure under src/main/ is preserved.
+   - Ensure the IDE is configured to use Java 8 or higher.
+   - Import the project as a standard Java project, making sure the package structure under src/main/ is preserved.
 
-3.	Build the Project:
-	•	Command Line:
+3. Build the Project:
+   - Command Line:
     ```bash
     javac -d bin src/main/*.java
   This compiles all Java files in src/main/ into the bin folder.
 
-4.	Run the Application (or Tests):
-	•	Command Line:
+4. Run the Application (or Tests):
+   - Command Line:
     ```bash
     java -cp bin main.Main
   This runs the Main class inside the main package.
 
-5.	Generate Documentation (Optional):
-	•	To produce JavaDoc HTML pages:
+6. Generate Documentation (Optional):
+   - To produce JavaDoc HTML pages:
     ```bash
     javadoc -d doc src/main/*.java
     Open doc/index.html
