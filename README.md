@@ -55,9 +55,9 @@ This project is a Java-based stock management system that uses a generic 2-3 tre
 
 4. Run the Application (or Tests):
    - Command Line:
-      ```bash
-      java -cp bin main.Main
-    This runs the Main class inside the main package.
+   ```bash
+   java -cp bin main.Main
+  This runs the Main class inside the main package.
 
 5. Generate Documentation (Optional):
    - To produce JavaDoc HTML pages:
